@@ -1,0 +1,8 @@
+node_modules/
+client/node_modules/
+.env
+ml/__pycache__/
+ml/*.pkl
+ml/*.joblib
+*.pyc
+client/build/

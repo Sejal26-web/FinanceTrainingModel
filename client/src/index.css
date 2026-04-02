@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@theme {
+  --color-dark-900: #060611;
+  --color-dark-800: #0c0c24;
+  --color-dark-700: #12123a;
+  --color-dark-600: #1a1a4e;
+  --color-glass: rgba(255, 255, 255, 0.035);
+  --color-glass-border: rgba(255, 255, 255, 0.07);
+  --color-glass-hover: rgba(255, 255, 255, 0.06);
+  --color-accent-cyan: #06b6d4;
+  --color-accent-blue: #6366f1;
+  --color-accent-purple: #a855f7;
+  --color-accent-green: #10b981;
+  --color-accent-red: #f43f5e;
+  --color-accent-gold: #f59e0b;
+  --color-text-primary: #e2e8f0;
+  --color-text-secondary: #8b9ec2;
+  --color-text-muted: #4f5d7a;
+}
+
+body {
+  background: linear-gradient(160deg, var(--color-dark-900) 0%, var(--color-dark-800) 35%, var(--color-dark-700) 70%, #0e1a3d 100%);
+  min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Animated gradient orbs */
+body::before,
+body::after {
+  content: '';
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  opacity: 0.12;
+  z-index: -1;
+  pointer-events: none;
+}
+body::before {
+  width: 600px;
+  height: 600px;
+  background: linear-gradient(135deg, var(--color-accent-cyan), var(--color-accent-blue));
+  top: -200px;
+  right: -100px;
+  animation: floatOrb 15s ease-in-out infinite alternate;
+}
+body::after {
+  width: 500px;
+  height: 500px;
+  background: linear-gradient(135deg, var(--color-accent-purple), var(--color-accent-red));
+  bottom: -150px;
+  left: -100px;
+  animation: floatOrb 18s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes floatOrb {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(40px, -30px); }
+}
+
+/* Native select options */
+select option {
+  background-color: #0c0c24;
+  color: #e2e8f0;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* Glass utility */
+.glass {
+  background: var(--color-glass);
+  border: 1px solid var(--color-glass-border);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+/* Glow pulse for badges */
+@keyframes glowPulse {
+  0%, 100% { box-shadow: 0 0 8px currentColor; }
+  50% { box-shadow: 0 0 20px currentColor; }
+}
+.glow-pulse { animation: glowPulse 2s ease-in-out infinite; }

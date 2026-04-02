@@ -1,0 +1,65 @@
+{
+  "knn": {
+    "model": "KNN",
+    "accuracy": 95.5,
+    "precision": 97.19,
+    "recall": 97.74,
+    "f1_score": 97.46,
+    "confusion_matrix": [
+      [
+        18,
+        5
+      ],
+      [
+        4,
+        173
+      ]
+    ],
+    "cv_scores": [
+      96.5,
+      95.5,
+      94.0,
+      96.5,
+      96.0
+    ],
+    "cv_mean": 95.7
+  },
+  "rf": {
+    "model": "Random Forest",
+    "accuracy": 97.0,
+    "precision": 97.77,
+    "recall": 98.87,
+    "f1_score": 98.31,
+    "confusion_matrix": [
+      [
+        19,
+        4
+      ],
+      [
+        2,
+        175
+      ]
+    ],
+    "cv_scores": [
+      97.5,
+      98.5,
+      97.0,
+      96.5,
+      97.0
+    ],
+    "cv_mean": 97.3,
+    "feature_importance": {
+      "gender": 0.0106,
+      "married": 0.0109,
+      "dependents": 0.0219,
+      "education": 0.0114,
+      "self_employed": 0.0081,
+      "applicant_income": 0.072,
+      "coapplicant_income": 0.0723,
+      "loan_amount": 0.1169,
+      "loan_amount_term": 0.036,
+      "credit_history": 0.6265,
+      "property_area": 0.0135
+    }
+  }
+}
