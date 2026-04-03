@@ -1,4 +1,5 @@
 const path = require("path");
+const fs = require("fs");
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -9,6 +10,13 @@ const connectDB = require("./config/db");
 const errorHandler = require("./middleware/errorHandler");
 const predictionRoutes = require("./routes/predictions");
 const metricsRoutes = require("./routes/metrics");
+const authRoutes = require("./routes/auth");
+
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, "..", "uploads");
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -27,8 +35,10 @@ const limiter = rateLimit({
 app.use("/api/", limiter);
 
 // Routes
+app.use("/api/auth", authRoutes);
 app.use("/api/predictions", predictionRoutes);
 app.use("/api/metrics", metricsRoutes);
+app.use("/uploads", express.static(uploadsDir));
 
 app.get("/api/health", (_req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });

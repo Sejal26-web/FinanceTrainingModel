@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 
 const predictionSchema = new mongoose.Schema(
   {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    applicantName: { type: String, trim: true },
+    applicantAge: { type: Number },
+    employmentType: { type: String },
+    supportDocs: [{ filename: String, originalName: String, path: String, size: Number }],
     input: {
       gender: { type: String, required: true, enum: ["Male", "Female"] },
       married: { type: String, required: true, enum: ["Yes", "No"] },

@@ -4,13 +4,22 @@ const AppError = require("../utils/AppError");
 
 const HISTORY_LIMIT = 50;
 
-async function createPrediction(input) {
+async function createPrediction(input, meta = {}) {
   const results = await runPythonPrediction(input);
 
-  const prediction = await Prediction.create({ input, results });
+  const prediction = await Prediction.create({
+    user: meta.userId,
+    applicantName: meta.applicantName,
+    applicantAge: meta.applicantAge,
+    employmentType: meta.employmentType,
+    supportDocs: meta.supportDocs || [],
+    input,
+    results,
+  });
 
   return {
     id: prediction._id,
+    applicantName: prediction.applicantName,
     input: prediction.input,
     results: prediction.results,
     createdAt: prediction.createdAt,
@@ -19,6 +28,14 @@ async function createPrediction(input) {
 
 async function getPredictionHistory() {
   return Prediction.find()
+    .sort({ createdAt: -1 })
+    .limit(HISTORY_LIMIT)
+    .populate("user", "name email")
+    .lean();
+}
+
+async function getUserPredictionHistory(userId) {
+  return Prediction.find({ user: userId })
     .sort({ createdAt: -1 })
     .limit(HISTORY_LIMIT)
     .lean();
@@ -63,4 +80,4 @@ async function getPredictionStats() {
   };
 }
 
-module.exports = { createPrediction, getPredictionHistory, getPredictionStats };
+module.exports = { createPrediction, getPredictionHistory, getUserPredictionHistory, getPredictionStats };
