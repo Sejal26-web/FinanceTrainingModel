@@ -2,6 +2,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 import { FiMenu, FiX, FiLogOut, FiUser, FiHome, FiFileText, FiBarChart2 } from "react-icons/fi";
+import logo from "../../assets/logo.png";
 
 const navLinks = [
   { to: "/", label: "Home", icon: FiHome },
@@ -28,14 +29,14 @@ export default function Navbar() {
     <nav className="sticky top-0 z-50 glass-card border-b border-white/5">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">LP</span>
-            </div>
-            <span className="text-white font-bold text-lg hidden sm:block">
-              LoanPredict <span className="text-cyan-400">AI</span>
-            </span>
+          
+          {/* ✅ UPDATED LOGO */}
+          <Link to="/" className="flex items-center group">
+            <img
+              src={logo}
+              alt="LoanWise"
+              className="h-50 w-auto object-contain transition-all duration-300 group-hover:scale-105"
+            />
           </Link>
 
           {/* Desktop Nav */}
