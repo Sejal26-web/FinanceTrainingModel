@@ -14,6 +14,7 @@ import {
 
 const VALID_LOAN_TERMS = [36, 60, 84, 120, 180, 240, 300, 360, 480];
 const EMPLOYMENT_TYPES = ["Salaried", "Self-Employed", "Business", "Freelancer", "Unemployed"];
+const LOAN_TYPES = ["Home Loan", "Personal Loan", "Education Loan", "Vehicle Loan", "Business Loan", "Gold Loan", "Agriculture Loan"];
 
 const initialLoanForm = {
   gender: "Male",
@@ -36,6 +37,7 @@ export default function LoanFormPage() {
   const [applicantName, setApplicantName] = useState(user?.name || "");
   const [applicantAge, setApplicantAge] = useState(user?.age || "");
   const [employmentType, setEmploymentType] = useState(user?.employmentType || "");
+  const [loanType, setLoanType] = useState("");
   const [files, setFiles] = useState([]);
   const [form, setForm] = useState(initialLoanForm);
   const [loading, setLoading] = useState(false);
@@ -67,6 +69,7 @@ export default function LoanFormPage() {
       formData.append("applicantName", applicantName);
       if (applicantAge) formData.append("applicantAge", applicantAge);
       formData.append("employmentType", employmentType);
+      if (loanType) formData.append("loanType", loanType);
 
       // Loan fields
       Object.entries(form).forEach(([key, value]) => {
@@ -112,7 +115,7 @@ export default function LoanFormPage() {
             <FiUser className="text-cyan-400" /> Personal Information
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
             <div>
               <label className={labelClass}>Full Name *</label>
               <input
@@ -146,6 +149,20 @@ export default function LoanFormPage() {
               >
                 <option value="">Select</option>
                 {EMPLOYMENT_TYPES.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label className={labelClass}>Loan Type *</label>
+              <select
+                value={loanType}
+                onChange={(e) => setLoanType(e.target.value)}
+                required
+                className={selectClass}
+              >
+                <option value="">Select Loan Type</option>
+                {LOAN_TYPES.map((t) => (
                   <option key={t} value={t}>{t}</option>
                 ))}
               </select>

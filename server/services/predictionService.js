@@ -12,6 +12,7 @@ async function createPrediction(input, meta = {}) {
     applicantName: meta.applicantName,
     applicantAge: meta.applicantAge,
     employmentType: meta.employmentType,
+    loanType: meta.loanType || "",
     supportDocs: meta.supportDocs || [],
     input,
     results,

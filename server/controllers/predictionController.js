@@ -18,6 +18,7 @@ async function create(req, res) {
     applicantName: req.body.applicantName || req.user?.name,
     applicantAge: req.body.applicantAge ? Number(req.body.applicantAge) : req.user?.age,
     employmentType: req.body.employmentType || req.user?.employmentType,
+    loanType: req.body.loanType || "",
     supportDocs: files,
   };
 

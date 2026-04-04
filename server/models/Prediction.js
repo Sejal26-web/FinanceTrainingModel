@@ -6,6 +6,11 @@ const predictionSchema = new mongoose.Schema(
     applicantName: { type: String, trim: true },
     applicantAge: { type: Number },
     employmentType: { type: String },
+    loanType: {
+      type: String,
+      enum: ["Home Loan", "Personal Loan", "Education Loan", "Vehicle Loan", "Business Loan", "Gold Loan", "Agriculture Loan", ""],
+      default: "",
+    },
     supportDocs: [{ filename: String, originalName: String, path: String, size: Number }],
     input: {
       gender: { type: String, required: true, enum: ["Male", "Female"] },

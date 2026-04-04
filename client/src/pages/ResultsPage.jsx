@@ -16,7 +16,18 @@ import {
 } from "chart.js";
 import { getMetrics } from "../services/api";
 import { COLORS, darkChartOptions, radarChartOptions, doughnutChartOptions } from "../config/chartConfig";
-import { FiCheckCircle, FiXCircle, FiBarChart2, FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import {
+  FiCheckCircle,
+  FiXCircle,
+  FiBarChart2,
+  FiArrowLeft,
+  FiArrowRight,
+  FiActivity,
+  FiTarget,
+  FiTrendingUp,
+  FiAward,
+  FiLayers,
+} from "react-icons/fi";
 
 ChartJS.register(
   CategoryScale,
@@ -30,6 +41,45 @@ ChartJS.register(
   Tooltip,
   Legend
 );
+
+function CircularProgress({ value, size = 120, stroke = 8, color, label }) {
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const offset = circumference - (value / 100) * circumference;
+
+  return (
+    <div className="flex flex-col items-center gap-2">
+      <div className="relative" style={{ width: size, height: size }}>
+        <svg width={size} height={size} className="-rotate-90">
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke="rgba(255,255,255,0.05)"
+            strokeWidth={stroke}
+          />
+          <circle
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            fill="none"
+            stroke={color}
+            strokeWidth={stroke}
+            strokeLinecap="round"
+            strokeDasharray={circumference}
+            strokeDashoffset={offset}
+            style={{ transition: "stroke-dashoffset 1s ease-out" }}
+          />
+        </svg>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <span className="text-2xl font-bold text-white">{value}%</span>
+        </div>
+      </div>
+      <span className="text-gray-400 text-sm">{label}</span>
+    </div>
+  );
+}
 
 export default function ResultsPage() {
   const location = useLocation();
@@ -56,8 +106,9 @@ export default function ResultsPage() {
   const isKnnApproved = knn.prediction === "Approved";
   const isRfApproved = rf.prediction === "Approved";
   const bothAgree = knn.prediction === rf.prediction;
+  const finalVerdict = bothAgree ? knn.prediction : "Mixed";
 
-  // Confidence comparison bar chart
+  // Chart data
   const confidenceData = {
     labels: ["KNN", "Random Forest"],
     datasets: [
@@ -68,11 +119,11 @@ export default function ResultsPage() {
         borderColor: [COLORS.cyan.border, COLORS.blue.border],
         borderWidth: 2,
         borderRadius: 8,
+        barPercentage: 0.5,
       },
     ],
   };
 
-  // Approval probability doughnut for each
   const knnDoughnutData = {
     labels: ["Approved", "Rejected"],
     datasets: [
@@ -97,7 +148,6 @@ export default function ResultsPage() {
     ],
   };
 
-  // Radar chart (if metrics available)
   const radarData = metrics
     ? {
         labels: ["Accuracy", "Precision", "Recall", "F1 Score", "CV Mean"],
@@ -114,6 +164,8 @@ export default function ResultsPage() {
             backgroundColor: COLORS.cyan.light,
             borderColor: COLORS.cyan.border,
             pointBackgroundColor: COLORS.cyan.border,
+            pointRadius: 4,
+            borderWidth: 2,
           },
           {
             label: "Random Forest",
@@ -127,19 +179,22 @@ export default function ResultsPage() {
             backgroundColor: COLORS.blue.light,
             borderColor: COLORS.blue.border,
             pointBackgroundColor: COLORS.blue.border,
+            pointRadius: 4,
+            borderWidth: 2,
           },
         ],
       }
     : null;
 
-  // Feature importance bar chart
   const featureImportanceData = metrics?.rf?.feature_importance
     ? {
-        labels: Object.keys(metrics.rf.feature_importance),
+        labels: Object.keys(metrics.rf.feature_importance).map(
+          (k) => k.replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase())
+        ),
         datasets: [
           {
-            label: "Importance %",
-            data: Object.values(metrics.rf.feature_importance),
+            label: "Importance",
+            data: Object.values(metrics.rf.feature_importance).map((v) => (v * 100).toFixed(1)),
             backgroundColor: Object.keys(metrics.rf.feature_importance).map(
               (_, i) =>
                 [
@@ -156,216 +211,382 @@ export default function ResultsPage() {
                   COLORS.slate.bg,
                 ][i % 11]
             ),
+            borderColor: Object.keys(metrics.rf.feature_importance).map(
+              (_, i) =>
+                [
+                  COLORS.cyan.border,
+                  COLORS.blue.border,
+                  COLORS.purple.border,
+                  COLORS.green.border,
+                  COLORS.amber.border,
+                  COLORS.red.border,
+                  COLORS.pink.border,
+                  COLORS.teal.border,
+                  COLORS.orange.border,
+                  COLORS.indigo.border,
+                  COLORS.slate.border,
+                ][i % 11]
+            ),
+            borderWidth: 1,
             borderRadius: 6,
           },
         ],
       }
     : null;
 
+  const metricsList = metrics
+    ? [
+        { label: "Accuracy", icon: FiTarget, knn: metrics.knn.accuracy, rf: metrics.rf.accuracy },
+        { label: "Precision", icon: FiActivity, knn: metrics.knn.precision, rf: metrics.rf.precision },
+        { label: "Recall", icon: FiTrendingUp, knn: metrics.knn.recall, rf: metrics.rf.recall },
+        { label: "F1 Score", icon: FiAward, knn: metrics.knn.f1_score, rf: metrics.rf.f1_score },
+        { label: "CV Mean", icon: FiLayers, knn: metrics.knn.cv_mean, rf: metrics.rf.cv_mean },
+      ]
+    : [];
+
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8" data-aos="fade-up">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-8">
+      {/* Nav Row */}
+      <div className="flex items-center justify-between" data-aos="fade-up">
         <button
           onClick={() => navigate("/apply")}
-          className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all"
         >
-          <FiArrowLeft /> Back to Form
+          <FiArrowLeft size={16} /> Back
         </button>
         <Link
           to="/profile"
-          className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/5 transition-all"
         >
-          View All Loans <FiArrowRight />
+          All Loans <FiArrowRight size={16} />
         </Link>
       </div>
 
-      {/* Result Summary Cards */}
-      <div className="grid md:grid-cols-2 gap-6 mb-8" data-aos="fade-up">
-        {/* KNN Result */}
+      {/* ── Hero Verdict ── */}
+      <div
+        className={`relative overflow-hidden rounded-3xl border p-8 md:p-12 text-center ${
+          finalVerdict === "Approved"
+            ? "border-green-500/20 bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5"
+            : finalVerdict === "Rejected"
+            ? "border-red-500/20 bg-gradient-to-br from-red-500/5 via-transparent to-rose-500/5"
+            : "border-yellow-500/20 bg-gradient-to-br from-yellow-500/5 via-transparent to-amber-500/5"
+        }`}
+        data-aos="fade-up"
+      >
+        {/* Subtle glow */}
         <div
-          className={`glass-card p-6 rounded-2xl border ${
-            isKnnApproved ? "border-green-500/30" : "border-red-500/30"
+          className={`absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 rounded-full blur-3xl opacity-20 ${
+            finalVerdict === "Approved"
+              ? "bg-green-500"
+              : finalVerdict === "Rejected"
+              ? "bg-red-500"
+              : "bg-yellow-500"
           }`}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white">KNN Model</h3>
-            {isKnnApproved ? (
-              <FiCheckCircle className="text-green-400 text-2xl" />
-            ) : (
-              <FiXCircle className="text-red-400 text-2xl" />
-            )}
-          </div>
+        />
+
+        <div className="relative z-10">
           <div
-            className={`text-3xl font-bold mb-2 ${
-              isKnnApproved ? "text-green-400" : "text-red-400"
+            className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${
+              finalVerdict === "Approved"
+                ? "bg-green-500/10 text-green-400"
+                : finalVerdict === "Rejected"
+                ? "bg-red-500/10 text-red-400"
+                : "bg-yellow-500/10 text-yellow-400"
             }`}
           >
-            {knn.prediction}
-          </div>
-          <div className="text-gray-400">
-            Confidence: <span className="text-white font-semibold">{knn.confidence}%</span>
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-            <div className="bg-green-500/10 rounded-lg p-2 text-center">
-              <div className="text-green-400 font-semibold">{knn.probabilities.approved}%</div>
-              <div className="text-gray-500">Approval</div>
-            </div>
-            <div className="bg-red-500/10 rounded-lg p-2 text-center">
-              <div className="text-red-400 font-semibold">{knn.probabilities.rejected}%</div>
-              <div className="text-gray-500">Rejection</div>
-            </div>
-          </div>
-        </div>
-
-        {/* RF Result */}
-        <div
-          className={`glass-card p-6 rounded-2xl border ${
-            isRfApproved ? "border-green-500/30" : "border-red-500/30"
-          }`}
-        >
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-white">Random Forest Model</h3>
-            {isRfApproved ? (
-              <FiCheckCircle className="text-green-400 text-2xl" />
+            {finalVerdict === "Approved" ? (
+              <FiCheckCircle size={40} />
+            ) : finalVerdict === "Rejected" ? (
+              <FiXCircle size={40} />
             ) : (
-              <FiXCircle className="text-red-400 text-2xl" />
+              <FiBarChart2 size={40} />
             )}
           </div>
+
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+            Loan{" "}
+            <span
+              className={
+                finalVerdict === "Approved"
+                  ? "text-green-400"
+                  : finalVerdict === "Rejected"
+                  ? "text-red-400"
+                  : "text-yellow-400"
+              }
+            >
+              {finalVerdict === "Mixed" ? "Under Review" : finalVerdict}
+            </span>
+          </h1>
+
+          <p className="text-gray-400 text-lg max-w-lg mx-auto mb-8">
+            {bothAgree
+              ? `Both KNN and Random Forest models agree on this prediction with high confidence.`
+              : `The two models produced different results. Review the detailed breakdown below.`}
+          </p>
+
+          {/* Confidence rings */}
+          <div className="flex items-center justify-center gap-12 md:gap-20">
+            <CircularProgress
+              value={knn.confidence}
+              color={isKnnApproved ? "#10b981" : "#f43f5e"}
+              label="KNN Confidence"
+            />
+            <CircularProgress
+              value={rf.confidence}
+              color={isRfApproved ? "#10b981" : "#f43f5e"}
+              label="RF Confidence"
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* ── Model Result Cards ── */}
+      <div className="grid md:grid-cols-2 gap-6" data-aos="fade-up" data-aos-delay="100">
+        {[
+          { name: "KNN Model", model: knn, approved: isKnnApproved, accent: "cyan" },
+          { name: "Random Forest", model: rf, approved: isRfApproved, accent: "blue" },
+        ].map((m) => (
           <div
-            className={`text-3xl font-bold mb-2 ${
-              isRfApproved ? "text-green-400" : "text-red-400"
+            key={m.name}
+            className={`glass-card rounded-2xl border overflow-hidden ${
+              m.approved ? "border-green-500/15" : "border-red-500/15"
             }`}
           >
-            {rf.prediction}
-          </div>
-          <div className="text-gray-400">
-            Confidence: <span className="text-white font-semibold">{rf.confidence}%</span>
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-            <div className="bg-green-500/10 rounded-lg p-2 text-center">
-              <div className="text-green-400 font-semibold">{rf.probabilities.approved}%</div>
-              <div className="text-gray-500">Approval</div>
-            </div>
-            <div className="bg-red-500/10 rounded-lg p-2 text-center">
-              <div className="text-red-400 font-semibold">{rf.probabilities.rejected}%</div>
-              <div className="text-gray-500">Rejection</div>
-            </div>
-          </div>
-        </div>
-      </div>
+            {/* Color strip */}
+            <div
+              className={`h-1 ${
+                m.approved
+                  ? "bg-gradient-to-r from-green-500 to-emerald-400"
+                  : "bg-gradient-to-r from-red-500 to-rose-400"
+              }`}
+            />
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-5">
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                      m.accent === "cyan" ? "bg-cyan-500/10" : "bg-blue-500/10"
+                    }`}
+                  >
+                    <FiActivity
+                      className={m.accent === "cyan" ? "text-cyan-400" : "text-blue-400"}
+                    />
+                  </div>
+                  <h3 className="text-lg font-semibold text-white">{m.name}</h3>
+                </div>
+                <span
+                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    m.approved
+                      ? "bg-green-500/10 text-green-400 border border-green-500/20"
+                      : "bg-red-500/10 text-red-400 border border-red-500/20"
+                  }`}
+                >
+                  {m.model.prediction}
+                </span>
+              </div>
 
-      {/* Agreement Badge */}
-      <div className="text-center mb-8" data-aos="fade-up" data-aos-delay="100">
-        <div
-          className={`inline-flex items-center gap-2 px-6 py-3 rounded-full text-sm font-medium ${
-            bothAgree
-              ? "bg-green-500/10 border border-green-500/20 text-green-400"
-              : "bg-yellow-500/10 border border-yellow-500/20 text-yellow-400"
-          }`}
-        >
-          {bothAgree ? <FiCheckCircle /> : <FiBarChart2 />}
-          {bothAgree
-            ? `Both models agree: ${knn.prediction}`
-            : "Models disagree — review details below"}
-        </div>
-      </div>
-
-      {/* Charts Section */}
-      <div className="grid md:grid-cols-2 gap-6 mb-8">
-        {/* Confidence Comparison */}
-        <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up" data-aos-delay="200">
-          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-            <FiBarChart2 className="text-cyan-400" /> Confidence Comparison
-          </h3>
-          <Bar data={confidenceData} options={darkChartOptions} />
-        </div>
-
-        {/* Probability Split */}
-        <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up" data-aos-delay="250">
-          <h3 className="text-lg font-semibold text-white mb-4">Probability Distribution</h3>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <p className="text-center text-gray-400 text-sm mb-2">KNN</p>
-              <Doughnut data={knnDoughnutData} options={doughnutChartOptions} />
-            </div>
-            <div>
-              <p className="text-center text-gray-400 text-sm mb-2">Random Forest</p>
-              <Doughnut data={rfDoughnutData} options={doughnutChartOptions} />
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Model Metrics Comparison */}
-      {metrics && (
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          {/* Radar Chart */}
-          {radarData && (
-            <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up" data-aos-delay="300">
-              <h3 className="text-lg font-semibold text-white mb-4">Model Performance Radar</h3>
-              <Radar data={radarData} options={radarChartOptions} />
-            </div>
-          )}
-
-          {/* Accuracy Metrics Cards */}
-          <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up" data-aos-delay="350">
-            <h3 className="text-lg font-semibold text-white mb-4">Accuracy Scores</h3>
-            <div className="space-y-4">
-              {[
-                { label: "Accuracy", knn: metrics.knn.accuracy, rf: metrics.rf.accuracy },
-                { label: "Precision", knn: metrics.knn.precision, rf: metrics.rf.precision },
-                { label: "Recall", knn: metrics.knn.recall, rf: metrics.rf.recall },
-                { label: "F1 Score", knn: metrics.knn.f1_score, rf: metrics.rf.f1_score },
-                { label: "CV Mean", knn: metrics.knn.cv_mean, rf: metrics.rf.cv_mean },
-              ].map((m) => (
-                <div key={m.label} className="flex items-center justify-between py-2 border-b border-white/5">
-                  <span className="text-gray-400">{m.label}</span>
-                  <div className="flex gap-6">
-                    <span className="text-cyan-400 font-semibold">{m.knn}%</span>
-                    <span className="text-blue-400 font-semibold">{m.rf}%</span>
+              {/* Probability bars */}
+              <div className="space-y-3">
+                <div>
+                  <div className="flex items-center justify-between text-sm mb-1.5">
+                    <span className="text-gray-400">Approval Probability</span>
+                    <span className="text-green-400 font-semibold">{m.model.probabilities.approved}%</span>
+                  </div>
+                  <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full transition-all duration-1000"
+                      style={{ width: `${m.model.probabilities.approved}%` }}
+                    />
                   </div>
                 </div>
-              ))}
-              <div className="flex justify-end gap-6 text-xs text-gray-500">
-                <span>● KNN</span>
-                <span>● RF</span>
+                <div>
+                  <div className="flex items-center justify-between text-sm mb-1.5">
+                    <span className="text-gray-400">Rejection Probability</span>
+                    <span className="text-red-400 font-semibold">{m.model.probabilities.rejected}%</span>
+                  </div>
+                  <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-red-500 to-rose-400 rounded-full transition-all duration-1000"
+                      style={{ width: `${m.model.probabilities.rejected}%` }}
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
 
-      {/* Feature Importance */}
-      {featureImportanceData && (
-        <div className="glass-card p-6 rounded-2xl border border-white/5 mb-8" data-aos="fade-up" data-aos-delay="400">
-          <h3 className="text-lg font-semibold text-white mb-4">
-            RF Feature Importance
+      {/* ── Charts Row 1: Confidence + Probability Donuts ── */}
+      <div className="grid lg:grid-cols-5 gap-6">
+        <div
+          className="lg:col-span-3 glass-card p-6 rounded-2xl border border-white/5"
+          data-aos="fade-up"
+          data-aos-delay="150"
+        >
+          <h3 className="text-base font-semibold text-white mb-1 flex items-center gap-2">
+            <FiBarChart2 className="text-cyan-400" /> Confidence Comparison
           </h3>
-          <Bar
-            data={featureImportanceData}
-            options={{
-              ...darkChartOptions,
-              indexAxis: "y",
-              plugins: { ...darkChartOptions.plugins, legend: { display: false } },
-            }}
-          />
+          <p className="text-gray-500 text-xs mb-4">How confident each model is in its prediction</p>
+          <div className="h-64">
+            <Bar
+              data={confidenceData}
+              options={{
+                ...darkChartOptions,
+                plugins: { ...darkChartOptions.plugins, legend: { display: false } },
+              }}
+            />
+          </div>
         </div>
+
+        <div
+          className="lg:col-span-2 glass-card p-6 rounded-2xl border border-white/5"
+          data-aos="fade-up"
+          data-aos-delay="200"
+        >
+          <h3 className="text-base font-semibold text-white mb-1">Probability Split</h3>
+          <p className="text-gray-500 text-xs mb-4">Approval vs rejection breakdown per model</p>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex flex-col items-center">
+              <div className="h-40 w-full">
+                <Doughnut data={knnDoughnutData} options={doughnutChartOptions} />
+              </div>
+              <span className="text-gray-400 text-xs mt-2 font-medium">KNN</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <div className="h-40 w-full">
+                <Doughnut data={rfDoughnutData} options={doughnutChartOptions} />
+              </div>
+              <span className="text-gray-400 text-xs mt-2 font-medium">Random Forest</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Model Metrics Section ── */}
+      {metrics && (
+        <>
+          {/* Section Heading */}
+          <div className="text-center pt-4" data-aos="fade-up">
+            <h2 className="text-2xl font-bold text-white mb-1">Model Performance Metrics</h2>
+            <p className="text-gray-500 text-sm">
+              Accuracy, precision, recall and more — KNN vs Random Forest
+            </p>
+          </div>
+
+          {/* Metric Cards Row */}
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4" data-aos="fade-up" data-aos-delay="100">
+            {metricsList.map((m) => (
+              <div
+                key={m.label}
+                className="glass-card rounded-xl border border-white/5 p-4 hover:border-cyan-500/20 transition-colors"
+              >
+                <div className="flex items-center gap-2 mb-3">
+                  <m.icon className="text-cyan-400 text-sm" />
+                  <span className="text-gray-400 text-xs font-medium">{m.label}</span>
+                </div>
+                <div className="flex items-end justify-between">
+                  <div>
+                    <div className="text-xs text-gray-500 mb-0.5">KNN</div>
+                    <div className="text-lg font-bold text-cyan-400">{m.knn}%</div>
+                  </div>
+                  <div className="text-right">
+                    <div className="text-xs text-gray-500 mb-0.5">RF</div>
+                    <div className="text-lg font-bold text-blue-400">{m.rf}%</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Charts Row 2: Radar + Feature Importance */}
+          <div className="grid lg:grid-cols-2 gap-6">
+            {radarData && (
+              <div
+                className="glass-card p-6 rounded-2xl border border-white/5"
+                data-aos="fade-up"
+                data-aos-delay="150"
+              >
+                <h3 className="text-base font-semibold text-white mb-1">Performance Radar</h3>
+                <p className="text-gray-500 text-xs mb-4">
+                  Multi-metric overlay comparing both models
+                </p>
+                <div className="h-72">
+                  <Radar data={radarData} options={radarChartOptions} />
+                </div>
+              </div>
+            )}
+
+            {featureImportanceData && (
+              <div
+                className="glass-card p-6 rounded-2xl border border-white/5"
+                data-aos="fade-up"
+                data-aos-delay="200"
+              >
+                <h3 className="text-base font-semibold text-white mb-1">
+                  Feature Importance (RF)
+                </h3>
+                <p className="text-gray-500 text-xs mb-4">
+                  Which factors most influence the Random Forest decision
+                </p>
+                <div className="h-72">
+                  <Bar
+                    data={featureImportanceData}
+                    options={{
+                      ...darkChartOptions,
+                      indexAxis: "y",
+                      scales: {
+                        ...darkChartOptions.scales,
+                        y: {
+                          ...darkChartOptions.scales.y,
+                          max: undefined,
+                          ticks: {
+                            ...darkChartOptions.scales.y.ticks,
+                            font: { size: 10 },
+                          },
+                        },
+                        x: {
+                          ...darkChartOptions.scales.x,
+                          ticks: {
+                            ...darkChartOptions.scales.x.ticks,
+                            callback: (v) => v + "%",
+                          },
+                        },
+                      },
+                      plugins: {
+                        ...darkChartOptions.plugins,
+                        legend: { display: false },
+                        tooltip: {
+                          ...darkChartOptions.plugins.tooltip,
+                          callbacks: { label: (ctx) => `${ctx.parsed.x}%` },
+                        },
+                      },
+                    }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </>
       )}
 
-      {/* Action Buttons */}
-      <div className="flex flex-col sm:flex-row gap-4 justify-center" data-aos="fade-up" data-aos-delay="500">
+      {/* ── Action Buttons ── */}
+      <div
+        className="flex flex-col sm:flex-row gap-4 justify-center pt-4 pb-8"
+        data-aos="fade-up"
+        data-aos-delay="250"
+      >
         <button
           onClick={() => navigate("/apply")}
-          className="inline-flex items-center justify-center gap-2 px-8 py-3 border border-white/10 rounded-xl font-semibold text-white hover:bg-white/5 transition-all"
+          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-white border border-white/10 hover:bg-white/5 transition-all"
         >
-          <FiArrowLeft /> New Application
+          <FiArrowLeft size={16} /> New Application
         </button>
         <Link
           to="/compare"
-          className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl font-semibold text-white hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
+          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
         >
-          Full Model Comparison <FiArrowRight />
+          Full Model Comparison <FiArrowRight size={16} />
         </Link>
       </div>
     </div>

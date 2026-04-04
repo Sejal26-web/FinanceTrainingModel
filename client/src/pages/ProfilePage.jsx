@@ -213,6 +213,7 @@ export default function ProfilePage() {
               <thead>
                 <tr className="border-b border-white/10">
                   <th className="text-left py-3 px-4 text-gray-400 font-medium">Date</th>
+                  <th className="text-left py-3 px-4 text-gray-400 font-medium">Loan Type</th>
                   <th className="text-left py-3 px-4 text-gray-400 font-medium">Loan Amount</th>
                   <th className="text-left py-3 px-4 text-gray-400 font-medium">Income</th>
                   <th className="text-left py-3 px-4 text-gray-400 font-medium">Credit</th>
@@ -226,6 +227,9 @@ export default function ProfilePage() {
                   <tr key={loan._id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                     <td className="py-3 px-4 text-gray-300">
                       {new Date(loan.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="py-3 px-4 text-gray-300">
+                      {loan.loanType || "—"}
                     </td>
                     <td className="py-3 px-4 text-white font-medium">
                       ₹{loan.input?.loan_amount?.toLocaleString()}
