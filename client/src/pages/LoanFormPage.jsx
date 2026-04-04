@@ -283,6 +283,7 @@ export default function LoanFormPage() {
         </div>
 
         {/* Upload Support Documents */}
+<<<<<<< HEAD
         <div className="glass-card p-6 rounded-2xl border border-gray-200" data-aos="fade-up" data-aos-delay="200">
           <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
             <FiUpload className="text-cyan-600" /> Upload Support Documents
@@ -328,6 +329,49 @@ export default function LoanFormPage() {
             </div>
           )}
         </div>
+=======
+        <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up" data-aos-delay="200">
+  <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+    <FiUpload className="text-cyan-400" /> Upload Documents
+  </h2>
+
+  <div className="space-y-6">
+
+    {/* ID Proof */}
+    <div>
+      <label className="block text-gray-300 mb-2 font-medium">ID Proof</label>
+      <input
+        type="file"
+        onChange={(e) => handleFileChange(e, "idProof")}
+        className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
+      />
+    </div>
+
+    {/* Income Certificate */}
+    <div>
+      <label className="block text-gray-300 mb-2 font-medium">Income Certificate</label>
+      <input
+        type="file"
+        onChange={(e) => handleFileChange(e, "incomeProof")}
+        className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
+      />
+    </div>
+
+    {/* Salary Slip */}
+    <div>
+      <label className="block text-gray-300 mb-2 font-medium">Salary Slip</label>
+      <input
+        type="file"
+        onChange={(e) => handleFileChange(e, "salarySlip")}
+        className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
+      />
+    </div>
+
+  </div>
+</div>
+
+      
+>>>>>>> fbd11e64563a8aa72df9e4babbe63f9acff4b13d
 
         {/* Submit */}
         <div className="text-center" data-aos="fade-up" data-aos-delay="300">
