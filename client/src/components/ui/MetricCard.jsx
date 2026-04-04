@@ -9,14 +9,14 @@ export default function MetricCard({ value, label, icon: Icon, color = "cyan" })
   };
 
   return (
-    <div className="glass-card rounded-xl p-5 text-center group hover:border-gray-300 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md">
+    <div className="glass-card rounded-xl p-5 text-center group transition-all duration-300 hover:-translate-y-0.5">
       {Icon && (
         <div className={`${colorMap[color]} mb-2 flex justify-center`}>
           <Icon size={20} />
         </div>
       )}
       <div className={`text-2xl font-bold ${colorMap[color]}`}>{value}</div>
-      <div className="text-xs text-text-muted uppercase tracking-wider mt-1 font-medium">{label}</div>
+      <div className="text-xs t-text-muted uppercase tracking-wider mt-1 font-medium">{label}</div>
     </div>
   );
 }

@@ -91,27 +91,27 @@ export default function LoanFormPage() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-colors";
+    "w-full px-4 py-3 t-bg-input border t-border rounded-xl t-text placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 dark:focus:ring-blue-800 transition-colors";
   const selectClass = `${inputClass} appearance-none`;
-  const labelClass = "block text-gray-700 text-sm font-medium mb-2";
+  const labelClass = "block t-text-secondary text-sm font-medium mb-2";
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-8" data-aos="fade-up">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Loan Application</h1>
-        <p className="text-gray-500">Fill in your details to get an AI-powered loan prediction</p>
+        <h1 className="text-3xl font-bold t-text mb-2">Loan Application</h1>
+        <p className="t-text-muted">Fill in your details to get an AI-powered loan prediction</p>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm" data-aos="fade-up">
+        <div className="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm" data-aos="fade-up">
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Personal Information */}
-        <div className="glass-card p-6 rounded-2xl border border-gray-200" data-aos="fade-up">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+        <div className="glass-card p-6 rounded-2xl border t-border" data-aos="fade-up">
+          <h2 className="text-xl font-semibold t-text mb-6 flex items-center gap-2">
             <FiUser className="text-cyan-600" /> Personal Information
           </h2>
 
@@ -171,8 +171,8 @@ export default function LoanFormPage() {
         </div>
 
         {/* Loan Details */}
-        <div className="glass-card p-6 rounded-2xl border border-gray-200" data-aos="fade-up" data-aos-delay="100">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+        <div className="glass-card p-6 rounded-2xl border t-border" data-aos="fade-up" data-aos-delay="100">
+          <h2 className="text-xl font-semibold t-text mb-6 flex items-center gap-2">
             <FiFileText className="text-cyan-600" /> Loan Details
           </h2>
 
@@ -283,13 +283,12 @@ export default function LoanFormPage() {
         </div>
 
         {/* Upload Support Documents */}
-<<<<<<< HEAD
-        <div className="glass-card p-6 rounded-2xl border border-gray-200" data-aos="fade-up" data-aos-delay="200">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+        <div className="glass-card p-6 rounded-2xl border t-border" data-aos="fade-up" data-aos-delay="200">
+          <h2 className="text-xl font-semibold t-text mb-6 flex items-center gap-2">
             <FiUpload className="text-cyan-600" /> Upload Support Documents
           </h2>
 
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-cyan-500 transition-colors">
+          <div className="border-2 border-dashed t-border rounded-xl p-8 text-center hover:border-cyan-500 transition-colors">
             <input
               type="file"
               id="fileUpload"
@@ -299,9 +298,9 @@ export default function LoanFormPage() {
               className="hidden"
             />
             <label htmlFor="fileUpload" className="cursor-pointer">
-              <FiUpload className="text-3xl text-gray-400 mx-auto mb-3" />
-              <p className="text-gray-600 mb-1">Click to upload or drag and drop</p>
-              <p className="text-gray-400 text-sm">PDF, JPEG, PNG, DOC (max 5MB each, up to 5 files)</p>
+              <FiUpload className="text-3xl t-text-muted mx-auto mb-3" />
+              <p className="t-text-secondary mb-1">Click to upload or drag and drop</p>
+              <p className="t-text-muted text-sm">PDF, JPEG, PNG, DOC (max 5MB each, up to 5 files)</p>
             </label>
           </div>
 
@@ -310,12 +309,12 @@ export default function LoanFormPage() {
               {files.map((file, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg border border-gray-200"
+                  className="flex items-center justify-between px-4 py-3 t-bg-input rounded-lg border t-border"
                 >
                   <div className="flex items-center gap-3">
                     <FiFileText className="text-cyan-600" />
-                    <span className="text-gray-700 text-sm truncate max-w-xs">{file.name}</span>
-                    <span className="text-gray-400 text-xs">({(file.size / 1024).toFixed(1)} KB)</span>
+                    <span className="t-text-secondary text-sm truncate max-w-xs">{file.name}</span>
+                    <span className="t-text-muted text-xs">({(file.size / 1024).toFixed(1)} KB)</span>
                   </div>
                   <button
                     type="button"
@@ -329,49 +328,6 @@ export default function LoanFormPage() {
             </div>
           )}
         </div>
-=======
-        <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up" data-aos-delay="200">
-  <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-    <FiUpload className="text-cyan-400" /> Upload Documents
-  </h2>
-
-  <div className="space-y-6">
-
-    {/* ID Proof */}
-    <div>
-      <label className="block text-gray-300 mb-2 font-medium">ID Proof</label>
-      <input
-        type="file"
-        onChange={(e) => handleFileChange(e, "idProof")}
-        className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
-      />
-    </div>
-
-    {/* Income Certificate */}
-    <div>
-      <label className="block text-gray-300 mb-2 font-medium">Income Certificate</label>
-      <input
-        type="file"
-        onChange={(e) => handleFileChange(e, "incomeProof")}
-        className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
-      />
-    </div>
-
-    {/* Salary Slip */}
-    <div>
-      <label className="block text-gray-300 mb-2 font-medium">Salary Slip</label>
-      <input
-        type="file"
-        onChange={(e) => handleFileChange(e, "salarySlip")}
-        className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
-      />
-    </div>
-
-  </div>
-</div>
-
-      
->>>>>>> fbd11e64563a8aa72df9e4babbe63f9acff4b13d
 
         {/* Submit */}
         <div className="text-center" data-aos="fade-up" data-aos-delay="300">

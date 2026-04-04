@@ -39,18 +39,18 @@ export default function PredictionHistory() {
       <div className="overflow-x-auto -mx-6 md:-mx-7 px-6 md:px-7">
         <table className="w-full text-sm min-w-[640px]">
           <thead>
-            <tr className="border-b border-gray-200">
+            <tr className="border-b t-border">
               {["Date", "Income", "Loan Amt", "Credit", "Education", "KNN", "RF", "Match"].map((h) => (
                 <th
                   key={h}
-                  className="text-left px-3 py-3.5 text-xs font-semibold text-gray-500 uppercase tracking-wider first:pl-0"
+                  className="text-left px-3 py-3.5 text-xs font-semibold t-text-muted uppercase tracking-wider first:pl-0"
                 >
                   {h}
                 </th>
               ))}
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-black/5 dark:divide-white/5">
             {predictions.map((p, idx) => {
               const match = p.results?.knn?.prediction === p.results?.rf?.prediction;
               return (
@@ -58,15 +58,15 @@ export default function PredictionHistory() {
                   key={p._id}
                   data-aos="fade-up"
                   data-aos-delay={Math.min(idx * 30, 300)}
-                  className="hover:bg-gray-50 transition-colors"
+                  className="hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors"
                 >
-                  <td className="px-3 py-3.5 first:pl-0 text-gray-600">
+                  <td className="px-3 py-3.5 first:pl-0 t-text-secondary">
                     {new Date(p.createdAt).toLocaleDateString()}
                   </td>
-                  <td className="px-3 py-3.5 text-gray-900 font-medium">
+                  <td className="px-3 py-3.5 t-text font-medium">
                     ${p.input?.applicant_income?.toLocaleString()}
                   </td>
-                  <td className="px-3 py-3.5 text-gray-600">
+                  <td className="px-3 py-3.5 t-text-secondary">
                     {p.input?.loan_amount}K
                   </td>
                   <td className="px-3 py-3.5">
@@ -78,7 +78,7 @@ export default function PredictionHistory() {
                       {p.input?.credit_history === 1 ? "Good" : "Bad"}
                     </span>
                   </td>
-                  <td className="px-3 py-3.5 text-gray-600">
+                  <td className="px-3 py-3.5 t-text-secondary">
                     {p.input?.education}
                   </td>
                   <td className="px-3 py-3.5">

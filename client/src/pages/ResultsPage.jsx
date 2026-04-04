@@ -15,7 +15,7 @@ import {
   Legend,
 } from "chart.js";
 import { getMetrics } from "../services/api";
-import { COLORS, darkChartOptions, radarChartOptions, doughnutChartOptions } from "../config/chartConfig";
+import { COLORS, getChartOptions } from "../config/chartConfig";
 import {
   FiCheckCircle,
   FiXCircle,
@@ -58,7 +58,7 @@ function CircularProgress({ value, size = 120, stroke = 8, color, label }) {
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="rgba(0,0,0,0.05)"
+            stroke="var(--border-color, rgba(0,0,0,0.05))"
             strokeWidth={stroke}
           />
           <circle
@@ -75,10 +75,10 @@ function CircularProgress({ value, size = 120, stroke = 8, color, label }) {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-bold text-gray-900">{value}%</span>
+          <span className="text-2xl font-bold t-text">{value}%</span>
         </div>
       </div>
-      <span className="text-gray-500 text-sm">{label}</span>
+      <span className="t-text-muted text-sm">{label}</span>
     </div>
   );
 }
@@ -252,13 +252,13 @@ export default function ResultsPage() {
       <div className="flex items-center justify-between" data-aos="fade-up">
         <button
           onClick={() => navigate("/apply")}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg t-text-muted hover:t-text hover:bg-black/5 dark:hover:bg-white/5 transition-all"
         >
           <FiArrowLeft size={16} /> Back
         </button>
         <Link
           to="/profile"
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50 transition-all"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-cyan-600 dark:text-cyan-400 hover:text-cyan-700 dark:hover:text-cyan-300 hover:bg-cyan-50 dark:hover:bg-cyan-900/20 transition-all"
         >
           All Loans <FiArrowRight size={16} />
         </Link>
@@ -269,10 +269,10 @@ export default function ResultsPage() {
         <div
           className={`rounded-2xl border p-6 ${
             riskAssessment.riskLevel === "High"
-              ? "bg-red-50 border-red-200"
+              ? "bg-red-50 dark:bg-red-900/20 border-red-200 dark:border-red-800"
               : riskAssessment.riskLevel === "Medium"
-              ? "bg-amber-50 border-amber-200"
-              : "bg-green-50 border-green-200"
+              ? "bg-amber-50 dark:bg-amber-900/20 border-amber-200 dark:border-amber-800"
+              : "bg-green-50 dark:bg-green-900/20 border-green-200 dark:border-green-800"
           }`}
           data-aos="fade-up"
         >
@@ -289,7 +289,7 @@ export default function ResultsPage() {
               <FiShield size={20} />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+              <h3 className="font-semibold t-text flex items-center gap-2">
                 Risk Assessment
                 <span
                   className={`text-xs px-2 py-0.5 rounded-full font-medium ${
@@ -312,7 +312,7 @@ export default function ResultsPage() {
           </div>
           <ul className="space-y-2">
             {riskAssessment.flags.map((flag, i) => (
-              <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+              <li key={i} className="flex items-start gap-2 text-sm t-text-secondary">
                 <FiAlertTriangle className="text-amber-500 mt-0.5 flex-shrink-0" />
                 {flag}
               </li>
@@ -325,10 +325,10 @@ export default function ResultsPage() {
       <div
         className={`relative overflow-hidden rounded-3xl border p-8 md:p-12 text-center ${
           finalVerdict === "Approved"
-            ? "border-green-200 bg-gradient-to-br from-green-50 via-white to-emerald-50"
+            ? "border-green-200 dark:border-green-800 bg-gradient-to-br from-green-50 via-white to-emerald-50 dark:from-green-900/20 dark:via-transparent dark:to-emerald-900/20"
             : finalVerdict === "Rejected"
-            ? "border-red-200 bg-gradient-to-br from-red-50 via-white to-rose-50"
-            : "border-yellow-200 bg-gradient-to-br from-yellow-50 via-white to-amber-50"
+            ? "border-red-200 dark:border-red-800 bg-gradient-to-br from-red-50 via-white to-rose-50 dark:from-red-900/20 dark:via-transparent dark:to-rose-900/20"
+            : "border-yellow-200 dark:border-yellow-800 bg-gradient-to-br from-yellow-50 via-white to-amber-50 dark:from-yellow-900/20 dark:via-transparent dark:to-amber-900/20"
         }`}
         data-aos="fade-up"
       >
@@ -362,7 +362,7 @@ export default function ResultsPage() {
             )}
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
+          <h1 className="text-4xl md:text-5xl font-bold t-text mb-3">
             Loan{" "}
             <span
               className={
@@ -377,7 +377,7 @@ export default function ResultsPage() {
             </span>
           </h1>
 
-          <p className="text-gray-500 text-lg max-w-lg mx-auto mb-8">
+          <p className="t-text-muted text-lg max-w-lg mx-auto mb-8">
             {bothAgree
               ? `Both KNN and Random Forest models agree on this prediction with high confidence.`
               : `The two models produced different results. Review the detailed breakdown below.`}
@@ -408,7 +408,7 @@ export default function ResultsPage() {
           <div
             key={m.name}
             className={`glass-card rounded-2xl border overflow-hidden ${
-              m.approved ? "border-green-200" : "border-red-200"
+              m.approved ? "border-green-200 dark:border-green-800" : "border-red-200 dark:border-red-800"
             }`}
           >
             {/* Color strip */}
@@ -424,20 +424,20 @@ export default function ResultsPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                      m.accent === "cyan" ? "bg-cyan-50" : "bg-blue-50"
+                      m.accent === "cyan" ? "bg-cyan-50 dark:bg-cyan-900/20" : "bg-blue-50 dark:bg-blue-900/20"
                     }`}
                   >
                     <FiActivity
                       className={m.accent === "cyan" ? "text-cyan-600" : "text-blue-600"}
                     />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900">{m.name}</h3>
+                  <h3 className="text-lg font-semibold t-text">{m.name}</h3>
                 </div>
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-semibold ${
                     m.approved
-                      ? "bg-green-50 text-green-700 border border-green-200"
-                      : "bg-red-50 text-red-700 border border-red-200"
+                      ? "bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200 dark:border-green-800"
+                      : "bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-400 border border-red-200 dark:border-red-800"
                   }`}
                 >
                   {m.model.prediction}
@@ -448,10 +448,10 @@ export default function ResultsPage() {
               <div className="space-y-3">
                 <div>
                   <div className="flex items-center justify-between text-sm mb-1.5">
-                    <span className="text-gray-500">Approval Probability</span>
+                    <span className="t-text-muted">Approval Probability</span>
                     <span className="text-green-600 font-semibold">{m.model.probabilities.approved}%</span>
                   </div>
-                  <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-2.5 bg-black/5 dark:bg-white/10 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full transition-all duration-1000"
                       style={{ width: `${m.model.probabilities.approved}%` }}
@@ -460,10 +460,10 @@ export default function ResultsPage() {
                 </div>
                 <div>
                   <div className="flex items-center justify-between text-sm mb-1.5">
-                    <span className="text-gray-500">Rejection Probability</span>
+                    <span className="t-text-muted">Rejection Probability</span>
                     <span className="text-red-600 font-semibold">{m.model.probabilities.rejected}%</span>
                   </div>
-                  <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
+                  <div className="h-2.5 bg-black/5 dark:bg-white/10 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-red-500 to-rose-400 rounded-full transition-all duration-1000"
                       style={{ width: `${m.model.probabilities.rejected}%` }}
@@ -479,44 +479,44 @@ export default function ResultsPage() {
       {/* ── Charts Row 1: Confidence + Probability Donuts ── */}
       <div className="grid lg:grid-cols-5 gap-6">
         <div
-          className="lg:col-span-3 glass-card p-6 rounded-2xl border border-gray-200"
+          className="lg:col-span-3 glass-card p-6 rounded-2xl border t-border"
           data-aos="fade-up"
           data-aos-delay="150"
         >
-          <h3 className="text-base font-semibold text-gray-900 mb-1 flex items-center gap-2">
+          <h3 className="text-base font-semibold t-text mb-1 flex items-center gap-2">
             <FiBarChart2 className="text-cyan-600" /> Confidence Comparison
           </h3>
-          <p className="text-gray-400 text-xs mb-4">How confident each model is in its prediction</p>
+          <p className="t-text-muted text-xs mb-4">How confident each model is in its prediction</p>
           <div className="h-64">
             <Bar
               data={confidenceData}
               options={{
-                ...darkChartOptions,
-                plugins: { ...darkChartOptions.plugins, legend: { display: false } },
+                ...getChartOptions("bar"),
+                plugins: { ...getChartOptions("bar").plugins, legend: { display: false } },
               }}
             />
           </div>
         </div>
 
         <div
-          className="lg:col-span-2 glass-card p-6 rounded-2xl border border-gray-200"
+          className="lg:col-span-2 glass-card p-6 rounded-2xl border t-border"
           data-aos="fade-up"
           data-aos-delay="200"
         >
-          <h3 className="text-base font-semibold text-gray-900 mb-1">Probability Split</h3>
-          <p className="text-gray-400 text-xs mb-4">Approval vs rejection breakdown per model</p>
+          <h3 className="text-base font-semibold t-text mb-1">Probability Split</h3>
+          <p className="t-text-muted text-xs mb-4">Approval vs rejection breakdown per model</p>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col items-center">
               <div className="h-40 w-full">
-                <Doughnut data={knnDoughnutData} options={doughnutChartOptions} />
+                <Doughnut data={knnDoughnutData} options={getChartOptions("doughnut")} />
               </div>
-              <span className="text-gray-500 text-xs mt-2 font-medium">KNN</span>
+              <span className="t-text-muted text-xs mt-2 font-medium">KNN</span>
             </div>
             <div className="flex flex-col items-center">
               <div className="h-40 w-full">
-                <Doughnut data={rfDoughnutData} options={doughnutChartOptions} />
+                <Doughnut data={rfDoughnutData} options={getChartOptions("doughnut")} />
               </div>
-              <span className="text-gray-500 text-xs mt-2 font-medium">Random Forest</span>
+              <span className="t-text-muted text-xs mt-2 font-medium">Random Forest</span>
             </div>
           </div>
         </div>
@@ -527,8 +527,8 @@ export default function ResultsPage() {
         <>
           {/* Section Heading */}
           <div className="text-center pt-4" data-aos="fade-up">
-            <h2 className="text-2xl font-bold text-gray-900 mb-1">Model Performance Metrics</h2>
-            <p className="text-gray-400 text-sm">
+            <h2 className="text-2xl font-bold t-text mb-1">Model Performance Metrics</h2>
+            <p className="t-text-muted text-sm">
               Accuracy, precision, recall and more — KNN vs Random Forest
             </p>
           </div>
@@ -538,19 +538,19 @@ export default function ResultsPage() {
             {metricsList.map((m) => (
               <div
                 key={m.label}
-                className="glass-card rounded-xl border border-gray-200 p-4 hover:border-cyan-400 transition-colors hover:shadow-sm"
+                className="glass-card rounded-xl border t-border p-4 hover:border-cyan-400 transition-colors hover:shadow-sm"
               >
                 <div className="flex items-center gap-2 mb-3">
                   <m.icon className="text-cyan-600 text-sm" />
-                  <span className="text-gray-500 text-xs font-medium">{m.label}</span>
+                  <span className="t-text-muted text-xs font-medium">{m.label}</span>
                 </div>
                 <div className="flex items-end justify-between">
                   <div>
-                    <div className="text-xs text-gray-400 mb-0.5">KNN</div>
+                    <div className="text-xs t-text-muted mb-0.5">KNN</div>
                     <div className="text-lg font-bold text-cyan-600">{m.knn}%</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-gray-400 mb-0.5">RF</div>
+                    <div className="text-xs t-text-muted mb-0.5">RF</div>
                     <div className="text-lg font-bold text-blue-600">{m.rf}%</div>
                   </div>
                 </div>
@@ -562,61 +562,61 @@ export default function ResultsPage() {
           <div className="grid lg:grid-cols-2 gap-6">
             {radarData && (
               <div
-                className="glass-card p-6 rounded-2xl border border-gray-200"
+                className="glass-card p-6 rounded-2xl border t-border"
                 data-aos="fade-up"
                 data-aos-delay="150"
               >
-                <h3 className="text-base font-semibold text-gray-900 mb-1">Performance Radar</h3>
-                <p className="text-gray-400 text-xs mb-4">
+                <h3 className="text-base font-semibold t-text mb-1">Performance Radar</h3>
+                <p className="t-text-muted text-xs mb-4">
                   Multi-metric overlay comparing both models
                 </p>
                 <div className="h-72">
-                  <Radar data={radarData} options={radarChartOptions} />
+                  <Radar data={radarData} options={getChartOptions("radar")} />
                 </div>
               </div>
             )}
 
             {featureImportanceData && (
               <div
-                className="glass-card p-6 rounded-2xl border border-gray-200"
+                className="glass-card p-6 rounded-2xl border t-border"
                 data-aos="fade-up"
                 data-aos-delay="200"
               >
-                <h3 className="text-base font-semibold text-gray-900 mb-1">
+                <h3 className="text-base font-semibold t-text mb-1">
                   Feature Importance (RF)
                 </h3>
-                <p className="text-gray-400 text-xs mb-4">
+                <p className="t-text-muted text-xs mb-4">
                   Which factors most influence the Random Forest decision
                 </p>
                 <div className="h-72">
                   <Bar
                     data={featureImportanceData}
                     options={{
-                      ...darkChartOptions,
+                      ...getChartOptions("bar"),
                       indexAxis: "y",
                       scales: {
-                        ...darkChartOptions.scales,
+                        ...getChartOptions("bar").scales,
                         y: {
-                          ...darkChartOptions.scales.y,
+                          ...getChartOptions("bar").scales.y,
                           max: undefined,
                           ticks: {
-                            ...darkChartOptions.scales.y.ticks,
+                            ...getChartOptions("bar").scales.y.ticks,
                             font: { size: 10 },
                           },
                         },
                         x: {
-                          ...darkChartOptions.scales.x,
+                          ...getChartOptions("bar").scales.x,
                           ticks: {
-                            ...darkChartOptions.scales.x.ticks,
+                            ...getChartOptions("bar").scales.x.ticks,
                             callback: (v) => v + "%",
                           },
                         },
                       },
                       plugins: {
-                        ...darkChartOptions.plugins,
+                        ...getChartOptions("bar").plugins,
                         legend: { display: false },
                         tooltip: {
-                          ...darkChartOptions.plugins.tooltip,
+                          ...getChartOptions("bar").plugins.tooltip,
                           callbacks: { label: (ctx) => `${ctx.parsed.x}%` },
                         },
                       },
@@ -637,7 +637,7 @@ export default function ResultsPage() {
       >
         <button
           onClick={() => navigate("/apply")}
-          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-gray-700 border border-gray-300 hover:bg-gray-50 transition-all"
+          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold t-text-secondary border t-border hover:bg-black/5 dark:hover:bg-white/5 transition-all"
         >
           <FiArrowLeft size={16} /> New Application
         </button>

@@ -9,7 +9,7 @@ import { Bar, Radar, Doughnut } from "react-chartjs-2";
 import { HiOutlineChartBar, HiOutlineCpuChip, HiOutlineCheckCircle, HiOutlineArrowPath } from "react-icons/hi2";
 import { getMetrics, getPredictionStats } from "../../services/api";
 import {
-  darkChartOptions, radarChartOptions, doughnutChartOptions,
+  darkChartOptions, radarChartOptions, doughnutChartOptions, getChartOptions,
   COLORS, FEATURE_PALETTE,
 } from "../../config/chartConfig";
 import GlassCard from "../ui/GlassCard";
@@ -126,13 +126,13 @@ export default function ModelComparison() {
   };
 
   const featureDoughnutOpts = {
-    ...doughnutChartOptions,
+    ...getChartOptions("doughnut"),
     cutout: "55%",
     plugins: {
-      ...doughnutChartOptions.plugins,
+      ...getChartOptions("doughnut").plugins,
       legend: {
         position: "right",
-        labels: { color: "#475569", padding: 8, font: { size: 10 }, boxWidth: 12, borderRadius: 2 },
+        labels: { color: "var(--text-muted)", padding: 8, font: { size: 10 }, boxWidth: 12, borderRadius: 2 },
       },
     },
   };
@@ -159,7 +159,7 @@ export default function ModelComparison() {
           Performance Metrics Comparison
         </SectionTitle>
         <div className="h-80">
-          <Bar data={perfData} options={darkChartOptions} />
+          <Bar data={perfData} options={getChartOptions("bar")} />
         </div>
       </GlassCard>
 
@@ -168,7 +168,7 @@ export default function ModelComparison() {
         <GlassCard data-aos="fade-right" data-aos-delay="100">
           <SectionTitle subtitle="Multi-metric radar overlay">Radar Overview</SectionTitle>
           <div className="h-80">
-            <Radar data={radarData} options={radarChartOptions} />
+            <Radar data={radarData} options={getChartOptions("radar")} />
           </div>
         </GlassCard>
 
@@ -188,7 +188,7 @@ export default function ModelComparison() {
           Cross-Validation Scores
         </SectionTitle>
         <div className="h-72">
-          <Bar data={cvData} options={darkChartOptions} />
+          <Bar data={cvData} options={getChartOptions("bar")} />
         </div>
       </GlassCard>
 

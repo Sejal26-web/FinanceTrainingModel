@@ -1,88 +1,79 @@
-export const darkChartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      labels: {
-        color: "#475569",
-        font: { family: "Inter, system-ui", size: 12 },
-        padding: 16,
+const isDocDark = () => document.documentElement.classList.contains("dark");
+
+function themeColors() {
+  const dark = isDocDark();
+  return {
+    text: dark ? "#cbd5e1" : "#475569",
+    textStrong: dark ? "#f1f5f9" : "#0f172a",
+    grid: dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.04)",
+    border: dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.08)",
+    tooltipBg: dark ? "rgba(10,10,30,0.92)" : "rgba(255,255,255,0.95)",
+    tooltipBorder: dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)",
+    tickBg: dark ? "transparent" : "transparent",
+  };
+}
+
+function buildBarOptions() {
+  const c = themeColors();
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: c.text, font: { family: "Inter, system-ui", size: 12 }, padding: 16 } },
+      tooltip: { backgroundColor: c.tooltipBg, titleColor: c.textStrong, bodyColor: c.text, borderColor: c.tooltipBorder, borderWidth: 1, cornerRadius: 8, padding: 12 },
+    },
+    scales: {
+      x: { ticks: { color: c.text, font: { size: 11 } }, grid: { color: c.grid }, border: { color: c.border } },
+      y: { ticks: { color: c.text, font: { size: 11 } }, grid: { color: c.grid }, border: { color: c.border }, beginAtZero: true, max: 100 },
+    },
+  };
+}
+
+function buildRadarOptions() {
+  const c = themeColors();
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { labels: { color: c.text, font: { family: "Inter", size: 12 }, padding: 16 } },
+      tooltip: { backgroundColor: c.tooltipBg, titleColor: c.textStrong, bodyColor: c.text, borderColor: c.tooltipBorder, borderWidth: 1, cornerRadius: 8, padding: 12 },
+    },
+    scales: {
+      r: {
+        angleLines: { color: c.grid },
+        grid: { color: c.grid },
+        ticks: { color: c.text, backdropColor: c.tickBg, font: { size: 10 } },
+        pointLabels: { color: c.text, font: { size: 11 } },
+        min: 0,
+        max: 100,
       },
     },
-    tooltip: {
-      backgroundColor: "rgba(255, 255, 255, 0.95)",
-      titleColor: "#0f172a",
-      bodyColor: "#475569",
-      borderColor: "rgba(0, 0, 0, 0.1)",
-      borderWidth: 1,
-      cornerRadius: 8,
-      padding: 12,
-    },
-  },
-  scales: {
-    x: {
-      ticks: { color: "#64748b", font: { size: 11 } },
-      grid: { color: "rgba(0, 0, 0, 0.04)" },
-      border: { color: "rgba(0, 0, 0, 0.08)" },
-    },
-    y: {
-      ticks: { color: "#64748b", font: { size: 11 } },
-      grid: { color: "rgba(0, 0, 0, 0.04)" },
-      border: { color: "rgba(0, 0, 0, 0.08)" },
-      beginAtZero: true,
-      max: 100,
-    },
-  },
-};
+  };
+}
 
-export const radarChartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  plugins: {
-    legend: {
-      labels: { color: "#475569", font: { family: "Inter", size: 12 }, padding: 16 },
+function buildDoughnutOptions() {
+  const c = themeColors();
+  return {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: "65%",
+    plugins: {
+      legend: { position: "bottom", labels: { color: c.text, padding: 14, font: { size: 11 } } },
+      tooltip: { backgroundColor: c.tooltipBg, titleColor: c.textStrong, bodyColor: c.text, borderColor: c.tooltipBorder, borderWidth: 1, cornerRadius: 8 },
     },
-    tooltip: {
-      backgroundColor: "rgba(255, 255, 255, 0.95)",
-      titleColor: "#0f172a",
-      bodyColor: "#475569",
-      borderColor: "rgba(0, 0, 0, 0.1)",
-      borderWidth: 1,
-      cornerRadius: 8,
-      padding: 12,
-    },
-  },
-  scales: {
-    r: {
-      angleLines: { color: "rgba(0, 0, 0, 0.08)" },
-      grid: { color: "rgba(0, 0, 0, 0.08)" },
-      ticks: { color: "#64748b", backdropColor: "transparent", font: { size: 10 } },
-      pointLabels: { color: "#475569", font: { size: 11 } },
-      min: 0,
-      max: 100,
-    },
-  },
-};
+  };
+}
 
-export const doughnutChartOptions = {
-  responsive: true,
-  maintainAspectRatio: false,
-  cutout: "65%",
-  plugins: {
-    legend: {
-      position: "bottom",
-      labels: { color: "#475569", padding: 14, font: { size: 11 } },
-    },
-    tooltip: {
-      backgroundColor: "rgba(255, 255, 255, 0.95)",
-      titleColor: "#0f172a",
-      bodyColor: "#475569",
-      borderColor: "rgba(0, 0, 0, 0.1)",
-      borderWidth: 1,
-      cornerRadius: 8,
-    },
-  },
-};
+export function getChartOptions(type = "bar") {
+  if (type === "radar") return buildRadarOptions();
+  if (type === "doughnut") return buildDoughnutOptions();
+  return buildBarOptions();
+}
+
+// Keep static exports for backward compat (will use the current theme at import time)
+export const darkChartOptions = buildBarOptions();
+export const radarChartOptions = buildRadarOptions();
+export const doughnutChartOptions = buildDoughnutOptions();
 
 export const COLORS = {
   cyan: { bg: "rgba(6, 182, 212, 0.55)", border: "#06b6d4", light: "rgba(6, 182, 212, 0.12)" },

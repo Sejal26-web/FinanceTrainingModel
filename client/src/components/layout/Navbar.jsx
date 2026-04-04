@@ -1,7 +1,8 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import { useTheme } from "../../context/ThemeContext";
 import { useState } from "react";
-import { FiMenu, FiX, FiLogOut, FiUser, FiHome, FiFileText, FiBarChart2 } from "react-icons/fi";
+import { FiMenu, FiX, FiLogOut, FiUser, FiHome, FiFileText, FiBarChart2, FiSun, FiMoon } from "react-icons/fi";
 import logo from "../../assets/logo.png";
 
 const navLinks = [
@@ -13,6 +14,7 @@ const navLinks = [
 
 export default function Navbar() {
   const { user, logout } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -26,28 +28,16 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200 shadow-sm">
+    <nav className="sticky top-0 z-50 glass-card border-b rounded-none">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-<<<<<<< HEAD
-          {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center">
-              <span className="text-white font-bold text-sm">LP</span>
-            </div>
-            <span className="text-gray-900 font-bold text-lg hidden sm:block">
-              LoanPredict <span className="text-cyan-600">AI</span>
-            </span>
-=======
           
-          {/* ✅ UPDATED LOGO */}
           <Link to="/" className="flex items-center group">
             <img
               src={logo}
               alt="LoanWise"
               className="h-50 w-auto object-contain transition-all duration-300 group-hover:scale-105"
             />
->>>>>>> fbd11e64563a8aa72df9e4babbe63f9acff4b13d
           </Link>
 
           {/* Desktop Nav */}
@@ -60,8 +50,8 @@ export default function Navbar() {
                   to={link.to}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-cyan-50 text-cyan-700"
-                      : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                      ? "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400"
+                      : "t-text-muted hover:t-text hover:bg-black/5 dark:hover:bg-white/5"
                   }`}
                 >
                   <link.icon className="text-sm" />
@@ -71,16 +61,24 @@ export default function Navbar() {
             })}
           </div>
 
-          {/* Auth Buttons */}
+          {/* Auth + Theme Toggle */}
           <div className="hidden md:flex items-center gap-3">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg t-text-muted hover:t-text hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
+            </button>
+
             {user ? (
               <div className="flex items-center gap-3">
-                <span className="text-gray-500 text-sm">
-                  Hi, <span className="text-gray-900 font-medium">{user.name?.split(" ")[0]}</span>
+                <span className="t-text-muted text-sm">
+                  Hi, <span className="t-text font-medium">{user.name?.split(" ")[0]}</span>
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-red-500 hover:bg-red-500/10 transition-colors"
                 >
                   <FiLogOut /> Logout
                 </button>
@@ -89,7 +87,7 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-lg text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
+                  className="px-4 py-2 rounded-lg text-sm t-text-secondary hover:t-text hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
                 >
                   Sign In
                 </Link>
@@ -104,17 +102,26 @@ export default function Navbar() {
           </div>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-gray-500 hover:text-gray-900 p-2"
-          >
-            {mobileOpen ? <FiX size={20} /> : <FiMenu size={20} />}
-          </button>
+          <div className="flex md:hidden items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg t-text-muted"
+              aria-label="Toggle theme"
+            >
+              {isDark ? <FiSun size={18} /> : <FiMoon size={18} />}
+            </button>
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="t-text-muted hover:t-text p-2"
+            >
+              {mobileOpen ? <FiX size={20} /> : <FiMenu size={20} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="md:hidden pb-4 border-t border-gray-200 mt-2 pt-4 space-y-1">
+          <div className="md:hidden pb-4 border-t t-border mt-2 pt-4 space-y-1">
             {visibleLinks.map((link) => {
               const isActive = location.pathname === link.to;
               return (
@@ -124,8 +131,8 @@ export default function Navbar() {
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-cyan-50 text-cyan-700"
-                      : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
+                      ? "bg-cyan-500/10 text-cyan-600 dark:text-cyan-400"
+                      : "t-text-muted hover:t-text hover:bg-black/5 dark:hover:bg-white/5"
                   }`}
                 >
                   <link.icon />
@@ -133,28 +140,20 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <div className="border-t border-gray-200 pt-3 mt-3">
+            <div className="border-t t-border pt-3 mt-3">
               {user ? (
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-red-500 hover:bg-red-50 transition-colors w-full"
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-red-500 hover:bg-red-500/10 transition-colors w-full"
                 >
                   <FiLogOut /> Logout
                 </button>
               ) : (
                 <div className="space-y-1">
-                  <Link
-                    to="/login"
-                    onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-3 text-sm text-gray-600 hover:text-gray-900"
-                  >
+                  <Link to="/login" onClick={() => setMobileOpen(false)} className="block px-4 py-3 text-sm t-text-secondary hover:t-text">
                     Sign In
                   </Link>
-                  <Link
-                    to="/register"
-                    onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-3 text-sm text-cyan-600"
-                  >
+                  <Link to="/register" onClick={() => setMobileOpen(false)} className="block px-4 py-3 text-sm text-cyan-600">
                     Sign Up
                   </Link>
                 </div>

@@ -7,7 +7,7 @@ import { Bar, Doughnut } from "react-chartjs-2";
 import GlassCard from "../ui/GlassCard";
 import SectionTitle from "../ui/SectionTitle";
 import Badge from "../ui/Badge";
-import { darkChartOptions, doughnutChartOptions, COLORS } from "../../config/chartConfig";
+import { getChartOptions, COLORS } from "../../config/chartConfig";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, ArcElement, Title, Tooltip, Legend);
 
@@ -66,19 +66,19 @@ export default function PredictionResult({ result }) {
         </SectionTitle>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <div className="h-72">
-            <Bar data={confidenceData} options={darkChartOptions} />
+            <Bar data={confidenceData} options={getChartOptions("bar")} />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-center text-xs text-text-muted uppercase tracking-wider mb-3 font-medium">KNN</p>
               <div className="h-52">
-                <Doughnut data={makeDoughnut(knn.probabilities)} options={doughnutChartOptions} />
+                <Doughnut data={makeDoughnut(knn.probabilities)} options={getChartOptions("doughnut")} />
               </div>
             </div>
             <div>
               <p className="text-center text-xs text-text-muted uppercase tracking-wider mb-3 font-medium">Random Forest</p>
               <div className="h-52">
-                <Doughnut data={makeDoughnut(rf.probabilities)} options={doughnutChartOptions} />
+                <Doughnut data={makeDoughnut(rf.probabilities)} options={getChartOptions("doughnut")} />
               </div>
             </div>
           </div>
@@ -90,11 +90,11 @@ export default function PredictionResult({ result }) {
 
 function ResultCard({ name, result, gradient }) {
   return (
-    <div className={`bg-gradient-to-br ${gradient} rounded-xl border border-gray-200 p-6 text-center shadow-sm`}>
-      <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-3">{name}</p>
+    <div className={`bg-gradient-to-br ${gradient} rounded-xl border t-border p-6 text-center shadow-sm`}>
+      <p className="text-xs t-text-muted uppercase tracking-widest font-semibold mb-3">{name}</p>
       <Badge status={result.prediction} className="text-base px-5 py-2 glow-pulse" />
-      <p className="text-gray-500 text-sm mt-3">
-        Confidence: <span className="text-gray-900 font-semibold">{result.confidence}%</span>
+      <p className="t-text-muted text-sm mt-3">
+        Confidence: <span className="t-text font-semibold">{result.confidence}%</span>
       </p>
     </div>
   );

@@ -40,28 +40,28 @@ export default function RegisterPage() {
   };
 
   const inputClass =
-    "w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-colors";
+    "w-full pl-10 pr-4 py-3 t-bg-input border t-border rounded-xl t-text placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 dark:focus:ring-blue-800 transition-colors";
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 py-12">
       <div className="w-full max-w-md" data-aos="fade-up">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h1>
-          <p className="text-gray-500">Join us to predict your loan approval</p>
+          <h1 className="text-3xl font-bold t-text mb-2">Create Account</h1>
+          <p className="t-text-muted">Join us to predict your loan approval</p>
         </div>
 
-        <div className="glass-card p-8 rounded-2xl border border-gray-200 shadow-sm">
+        <div className="glass-card p-8 rounded-2xl border t-border shadow-sm">
           {error && (
-            <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200 text-red-600 text-sm">
+            <div className="mb-4 p-3 rounded-lg bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 text-sm">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">Full Name</label>
+              <label className="block t-text-secondary text-sm font-medium mb-2">Full Name</label>
               <div className="relative">
-                <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <FiUser className="absolute left-3 top-1/2 -translate-y-1/2 t-text-muted" />
                 <input
                   type="text"
                   name="name"
@@ -75,9 +75,9 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">Email</label>
+              <label className="block t-text-secondary text-sm font-medium mb-2">Email</label>
               <div className="relative">
-                <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <FiMail className="absolute left-3 top-1/2 -translate-y-1/2 t-text-muted" />
                 <input
                   type="email"
                   name="email"
@@ -91,9 +91,9 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">Password</label>
+              <label className="block t-text-secondary text-sm font-medium mb-2">Password</label>
               <div className="relative">
-                <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                <FiLock className="absolute left-3 top-1/2 -translate-y-1/2 t-text-muted" />
                 <input
                   type="password"
                   name="password"
@@ -109,9 +109,9 @@ export default function RegisterPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-gray-700 text-sm font-medium mb-2">Age</label>
+                <label className="block t-text-secondary text-sm font-medium mb-2">Age</label>
                 <div className="relative">
-                  <FiCalendar className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <FiCalendar className="absolute left-3 top-1/2 -translate-y-1/2 t-text-muted" />
                   <input
                     type="number"
                     name="age"
@@ -126,9 +126,9 @@ export default function RegisterPage() {
               </div>
 
               <div>
-                <label className="block text-gray-700 text-sm font-medium mb-2">Employment</label>
+                <label className="block t-text-secondary text-sm font-medium mb-2">Employment</label>
                 <div className="relative">
-                  <FiBriefcase className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+                  <FiBriefcase className="absolute left-3 top-1/2 -translate-y-1/2 t-text-muted" />
                   <select
                     name="employmentType"
                     value={form.employmentType}
@@ -161,7 +161,7 @@ export default function RegisterPage() {
             </button>
           </form>
 
-          <p className="text-center text-gray-500 text-sm mt-6">
+          <p className="text-center t-text-muted text-sm mt-6">
             Already have an account?{" "}
             <Link to="/login" className="text-cyan-600 hover:text-cyan-700 font-medium">
               Sign in

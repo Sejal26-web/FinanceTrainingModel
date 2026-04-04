@@ -18,12 +18,12 @@ export default function Header({ activeTab, onTabChange }) {
           LoanPredict AI
         </h1>
       </div>
-      <p className="text-gray-500 text-sm md:text-base">
+      <p className="t-text-muted text-sm md:text-base">
         Compare KNN &amp; Random Forest predictions in real-time
       </p>
 
       {/* Tab bar */}
-      <nav className="mt-7 inline-flex bg-white/70 border border-gray-200 rounded-xl p-1.5 gap-1 shadow-sm">
+      <nav className="mt-7 inline-flex bg-white/70 dark:bg-white/5 border t-border rounded-xl p-1.5 gap-1 shadow-sm">
         {TABS.map((t) => (
           <button
             key={t.key}
@@ -31,8 +31,8 @@ export default function Header({ activeTab, onTabChange }) {
             className={`
               px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 cursor-pointer
               ${activeTab === t.key
-                ? "bg-gradient-to-r from-blue-50 to-purple-50 text-blue-700 shadow-sm border border-blue-200"
-                : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+                ? "bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 text-blue-700 dark:text-blue-400 shadow-sm border border-blue-200 dark:border-blue-800"
+                : "t-text-muted hover:t-text hover:bg-black/5 dark:hover:bg-white/5"
               }
             `}
           >

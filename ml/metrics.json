@@ -1,65 +1,85 @@
 {
   "knn": {
     "model": "KNN",
-    "accuracy": 95.5,
-    "precision": 97.19,
-    "recall": 97.74,
-    "f1_score": 97.46,
+    "accuracy": 85.5,
+    "precision": 87.37,
+    "recall": 90.98,
+    "f1_score": 89.14,
+    "roc_auc": 91.92,
     "confusion_matrix": [
       [
-        18,
-        5
+        260,
+        86
       ],
       [
-        4,
-        173
+        59,
+        595
       ]
     ],
     "cv_scores": [
-      96.5,
-      95.5,
-      94.0,
-      96.5,
-      96.0
+      84.2,
+      85.9,
+      86.6,
+      86.8,
+      86.8
     ],
-    "cv_mean": 95.7
+    "cv_mean": 86.06,
+    "best_params": {
+      "metric": "manhattan",
+      "n_neighbors": 9,
+      "weights": "distance"
+    }
   },
   "rf": {
     "model": "Random Forest",
-    "accuracy": 97.0,
-    "precision": 97.77,
-    "recall": 98.87,
-    "f1_score": 98.31,
+    "accuracy": 87.9,
+    "precision": 91.32,
+    "recall": 90.06,
+    "f1_score": 90.69,
+    "roc_auc": 94.13,
     "confusion_matrix": [
       [
-        19,
-        4
+        290,
+        56
       ],
       [
-        2,
-        175
+        65,
+        589
       ]
     ],
     "cv_scores": [
-      97.5,
-      98.5,
-      97.0,
-      96.5,
-      97.0
+      88.1,
+      86.9,
+      87.7,
+      87.5,
+      87.4
     ],
-    "cv_mean": 97.3,
+    "cv_mean": 87.52,
+    "best_params": {
+      "max_depth": "None",
+      "min_samples_leaf": 2,
+      "min_samples_split": 2,
+      "n_estimators": 100
+    },
     "feature_importance": {
-      "gender": 0.0106,
-      "married": 0.0109,
-      "dependents": 0.0219,
-      "education": 0.0114,
-      "self_employed": 0.0081,
-      "applicant_income": 0.072,
-      "coapplicant_income": 0.0723,
-      "loan_amount": 0.1169,
-      "loan_amount_term": 0.036,
-      "credit_history": 0.6265,
-      "property_area": 0.0135
+      "gender": 0.0054,
+      "married": 0.0051,
+      "dependents": 0.0244,
+      "education": 0.022,
+      "self_employed": 0.0049,
+      "applicant_income": 0.079,
+      "coapplicant_income": 0.0492,
+      "loan_amount": 0.0341,
+      "loan_amount_term": 0.0145,
+      "credit_history": 0.2247,
+      "property_area": 0.0112,
+      "total_income": 0.2085,
+      "income_loan_ratio": 0.0706,
+      "emi": 0.0458,
+      "emi_income_ratio": 0.0702,
+      "log_applicant_income": 0.071,
+      "log_loan_amount": 0.0344,
+      "has_coapplicant": 0.025
     }
   }
 }

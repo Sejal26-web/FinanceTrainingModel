@@ -1,68 +1,151 @@
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.model_selection import (
+    train_test_split,
+    cross_val_score,
+    StratifiedKFold,
+    GridSearchCV,
+)
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+from sklearn.metrics import (
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score,
+    confusion_matrix,
+    roc_auc_score,
+)
 import joblib
 import os
 import json
 
+from feature_utils import engineer_features, CATEGORICAL_COLS
+
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-def generate_synthetic_data(n=1000):
-    """Generate synthetic loan dataset."""
+# ── Data generation ──────────────────────────────────────────────
+
+def generate_synthetic_data(n=5000):
+    """Generate a realistic synthetic loan dataset with multi-factor approval logic."""
     np.random.seed(42)
 
+    # Lognormal income distributions (more realistic than uniform)
+    applicant_income = np.random.lognormal(mean=8.5, sigma=0.8, size=n).astype(int)
+    applicant_income = np.clip(applicant_income, 1500, 150000)
+
+    # ~60% of applicants have a coapplicant
+    has_co = np.random.random(n) > 0.4
+    coapplicant_income = np.where(
+        has_co,
+        np.random.lognormal(mean=7.5, sigma=0.9, size=n).astype(int),
+        0,
+    )
+    coapplicant_income = np.clip(coapplicant_income, 0, 80000)
+
+    # Lognormal loan amounts for a realistic right-skewed distribution
+    loan_amount = np.random.lognormal(mean=4.8, sigma=0.6, size=n).astype(int)
+    loan_amount = np.clip(loan_amount, 20, 700)
+
     data = {
-        "gender": np.random.choice(["Male", "Female"], n),
-        "married": np.random.choice(["Yes", "No"], n),
-        "dependents": np.random.choice([0, 1, 2, 3], n),
-        "education": np.random.choice(["Graduate", "Not Graduate"], n),
+        "gender": np.random.choice(["Male", "Female"], n, p=[0.65, 0.35]),
+        "married": np.random.choice(["Yes", "No"], n, p=[0.65, 0.35]),
+        "dependents": np.random.choice([0, 1, 2, 3], n, p=[0.35, 0.30, 0.20, 0.15]),
+        "education": np.random.choice(["Graduate", "Not Graduate"], n, p=[0.70, 0.30]),
         "self_employed": np.random.choice(["Yes", "No"], n, p=[0.15, 0.85]),
-        "applicant_income": np.random.randint(1500, 80000, n),
-        "coapplicant_income": np.random.randint(0, 40000, n),
-        "loan_amount": np.random.randint(20, 700, n),
-        "loan_amount_term": np.random.choice([36, 60, 84, 120, 180, 240, 300, 360, 480], n),
+        "applicant_income": applicant_income,
+        "coapplicant_income": coapplicant_income,
+        "loan_amount": loan_amount,
+        "loan_amount_term": np.random.choice(
+            [36, 60, 84, 120, 180, 240, 300, 360, 480],
+            n,
+            p=[0.02, 0.05, 0.05, 0.10, 0.15, 0.10, 0.08, 0.40, 0.05],
+        ),
         "credit_history": np.random.choice([0.0, 1.0], n, p=[0.15, 0.85]),
-        "property_area": np.random.choice(["Urban", "Semiurban", "Rural"], n),
+        "property_area": np.random.choice(
+            ["Urban", "Semiurban", "Rural"], n, p=[0.35, 0.40, 0.25]
+        ),
     }
 
     df = pd.DataFrame(data)
 
-    # Create realistic loan approval logic
+    # ── Multi-factor approval logic ──
     total_income = df["applicant_income"] + df["coapplicant_income"]
-    income_ratio = (df["loan_amount"] * 1000) / (total_income + 1)
+    loan_value = df["loan_amount"] * 1000
+    income_ratio = loan_value / (total_income + 1)
+    emi = loan_value / (df["loan_amount_term"] + 1)
+    emi_ratio = emi / (total_income + 1)
 
-    approval_score = (
-        (df["credit_history"] * 3)
-        + (total_income > 5000).astype(int) * 1.5
-        + (income_ratio < 5).astype(int) * 1.5
-        + (df["education"] == "Graduate").astype(int) * 0.5
-        + np.random.normal(0, 0.5, n)
-    )
+    score = np.zeros(n)
 
-    df["loan_status"] = (approval_score > 3.0).astype(int)
+    # Credit history — strongest signal
+    score += df["credit_history"] * 4.0
+
+    # Income tiers
+    score += (total_income > 5000).astype(float) * 1.5
+    score += (total_income > 15000).astype(float) * 1.0
+    score += (total_income > 30000).astype(float) * 0.5
+
+    # Loan affordability
+    score += (income_ratio < 3).astype(float) * 2.0
+    score += (income_ratio < 5).astype(float) * 1.0
+    score -= (income_ratio > 8).astype(float) * 2.0
+
+    # EMI burden
+    score -= (emi_ratio > 0.5).astype(float) * 1.5
+    score -= (emi_ratio > 0.7).astype(float) * 1.5
+
+    # Education & employment risk
+    score += (df["education"] == "Graduate").astype(float) * 0.8
+    score -= (
+        (df["self_employed"] == "Yes") & (df["credit_history"] == 0)
+    ).astype(float) * 1.5
+
+    # Coapplicant support
+    score += (df["coapplicant_income"] > 0).astype(float) * 0.5
+
+    # Location effect
+    score += (df["property_area"] == "Semiurban").astype(float) * 0.3
+
+    # Dependents penalty when income is low
+    score -= (
+        (df["dependents"] >= 3) & (total_income < 5000)
+    ).astype(float) * 1.0
+
+    # Realistic noise
+    score += np.random.normal(0, 0.8, n)
+
+    df["loan_status"] = (score > 3.0).astype(int)
+    approval_pct = df["loan_status"].mean() * 100
+    print(f"  Approval rate: {approval_pct:.1f}%")
+
     return df
 
 
+# ── Preprocessing ────────────────────────────────────────────────
+
 def preprocess(df):
-    """Encode categorical features and scale."""
+    """Label-encode categoricals, engineer features, and scale."""
     df_processed = df.copy()
     label_encoders = {}
 
-    categorical_cols = ["gender", "married", "education", "self_employed", "property_area"]
-    for col in categorical_cols:
+    for col in CATEGORICAL_COLS:
         le = LabelEncoder()
         df_processed[col] = le.fit_transform(df_processed[col])
         label_encoders[col] = le
+
+    # Derive new features (after encoding so all cols are numeric)
+    df_processed = engineer_features(df_processed)
 
     feature_cols = [
         "gender", "married", "dependents", "education", "self_employed",
         "applicant_income", "coapplicant_income", "loan_amount",
         "loan_amount_term", "credit_history", "property_area",
+        # engineered
+        "total_income", "income_loan_ratio", "emi", "emi_income_ratio",
+        "log_applicant_income", "log_loan_amount", "has_coapplicant",
     ]
 
     X = df_processed[feature_cols].values
@@ -74,9 +157,12 @@ def preprocess(df):
     return X_scaled, y, scaler, label_encoders, feature_cols
 
 
+# ── Evaluation ───────────────────────────────────────────────────
+
 def evaluate_model(model, X_test, y_test, name):
-    """Compute evaluation metrics."""
+    """Compute comprehensive evaluation metrics."""
     y_pred = model.predict(X_test)
+    y_proba = model.predict_proba(X_test)[:, 1]
     cm = confusion_matrix(y_test, y_pred)
     return {
         "model": name,
@@ -84,43 +170,83 @@ def evaluate_model(model, X_test, y_test, name):
         "precision": round(precision_score(y_test, y_pred, zero_division=0) * 100, 2),
         "recall": round(recall_score(y_test, y_pred, zero_division=0) * 100, 2),
         "f1_score": round(f1_score(y_test, y_pred, zero_division=0) * 100, 2),
+        "roc_auc": round(roc_auc_score(y_test, y_proba) * 100, 2),
         "confusion_matrix": cm.tolist(),
     }
 
 
+# ── Training ─────────────────────────────────────────────────────
+
 def train():
-    print("Generating dataset...")
-    df = generate_synthetic_data(1000)
+    print("Generating dataset (5 000 samples)…")
+    df = generate_synthetic_data(5000)
 
-    print("Preprocessing...")
+    print("Preprocessing & feature engineering…")
     X, y, scaler, label_encoders, feature_cols = preprocess(df)
-    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # KNN
-    print("Training KNN...")
-    knn = KNeighborsClassifier(n_neighbors=5)
-    knn.fit(X_train, y_train)
-    knn_cv = cross_val_score(knn, X, y, cv=5)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y,
+    )
+
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+
+    # ── KNN with hyperparameter tuning ──
+    print("Tuning KNN…")
+    knn_grid = GridSearchCV(
+        KNeighborsClassifier(),
+        param_grid={
+            "n_neighbors": [3, 5, 7, 9, 11, 15],
+            "weights": ["uniform", "distance"],
+            "metric": ["euclidean", "manhattan"],
+        },
+        cv=cv,
+        scoring="f1",
+        n_jobs=-1,
+    )
+    knn_grid.fit(X_train, y_train)
+    knn = knn_grid.best_estimator_
+    print(f"  Best KNN params: {knn_grid.best_params_}")
+
+    knn_cv = cross_val_score(knn, X, y, cv=cv, scoring="accuracy")
     knn_metrics = evaluate_model(knn, X_test, y_test, "KNN")
     knn_metrics["cv_scores"] = [round(s * 100, 2) for s in knn_cv.tolist()]
     knn_metrics["cv_mean"] = round(knn_cv.mean() * 100, 2)
+    knn_metrics["best_params"] = knn_grid.best_params_
 
-    # Random Forest
-    print("Training Random Forest...")
-    rf = RandomForestClassifier(n_estimators=100, random_state=42)
-    rf.fit(X_train, y_train)
-    rf_cv = cross_val_score(rf, X, y, cv=5)
+    # ── Random Forest with hyperparameter tuning ──
+    print("Tuning Random Forest…")
+    rf_grid = GridSearchCV(
+        RandomForestClassifier(random_state=42),
+        param_grid={
+            "n_estimators": [100, 200, 300],
+            "max_depth": [10, 20, None],
+            "min_samples_split": [2, 5],
+            "min_samples_leaf": [1, 2],
+        },
+        cv=cv,
+        scoring="f1",
+        n_jobs=-1,
+    )
+    rf_grid.fit(X_train, y_train)
+    rf = rf_grid.best_estimator_
+    print(f"  Best RF params: {rf_grid.best_params_}")
+
+    rf_cv = cross_val_score(rf, X, y, cv=cv, scoring="accuracy")
     rf_metrics = evaluate_model(rf, X_test, y_test, "Random Forest")
     rf_metrics["cv_scores"] = [round(s * 100, 2) for s in rf_cv.tolist()]
     rf_metrics["cv_mean"] = round(rf_cv.mean() * 100, 2)
+    rf_metrics["best_params"] = {
+        k: (v if v is not None else "None")
+        for k, v in rf_grid.best_params_.items()
+    }
 
-    # Feature importance from RF
+    # Feature importance from best RF
     rf_metrics["feature_importance"] = {
         feature_cols[i]: round(float(imp), 4)
         for i, imp in enumerate(rf.feature_importances_)
     }
 
-    # Save models and artifacts
+    # ── Save artefacts ──
     joblib.dump(knn, os.path.join(SCRIPT_DIR, "knn_model.joblib"))
     joblib.dump(rf, os.path.join(SCRIPT_DIR, "rf_model.joblib"))
     joblib.dump(scaler, os.path.join(SCRIPT_DIR, "scaler.joblib"))
@@ -131,10 +257,17 @@ def train():
     with open(os.path.join(SCRIPT_DIR, "metrics.json"), "w") as f:
         json.dump(results, f, indent=2)
 
-    print("Training complete!")
-    print(f"KNN Accuracy: {knn_metrics['accuracy']}%")
-    print(f"RF  Accuracy: {rf_metrics['accuracy']}%")
-    print(json.dumps(results, indent=2))
+    print("\nTraining complete!")
+    print(
+        f"KNN — Accuracy: {knn_metrics['accuracy']}%  "
+        f"F1: {knn_metrics['f1_score']}%  "
+        f"AUC: {knn_metrics['roc_auc']}%"
+    )
+    print(
+        f"RF  — Accuracy: {rf_metrics['accuracy']}%  "
+        f"F1: {rf_metrics['f1_score']}%  "
+        f"AUC: {rf_metrics['roc_auc']}%"
+    )
     return results
 
 

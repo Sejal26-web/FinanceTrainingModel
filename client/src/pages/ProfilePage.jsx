@@ -60,13 +60,13 @@ export default function ProfilePage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Profile Card */}
-      <div className="glass-card p-8 rounded-2xl border border-gray-200 mb-8 shadow-sm" data-aos="fade-up">
+      <div className="glass-card p-8 rounded-2xl border t-border mb-8 shadow-sm" data-aos="fade-up">
         <div className="flex items-start justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900">User Profile</h2>
+          <h2 className="text-2xl font-bold t-text">User Profile</h2>
           {!editing ? (
             <button
               onClick={() => setEditing(true)}
-              className="flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-cyan-50 text-cyan-700 hover:bg-cyan-100 transition-colors"
+              className="flex items-center gap-2 px-4 py-2 text-sm rounded-lg bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400 hover:bg-cyan-100 dark:hover:bg-cyan-900/30 transition-colors"
             >
               <FiEdit3 /> Edit
             </button>
@@ -75,7 +75,7 @@ export default function ProfilePage() {
               <button
                 onClick={handleSave}
                 disabled={saving}
-                className="flex items-center gap-1 px-4 py-2 text-sm rounded-lg bg-green-50 text-green-700 hover:bg-green-100 transition-colors"
+                className="flex items-center gap-1 px-4 py-2 text-sm rounded-lg bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900/30 transition-colors"
               >
                 <FiCheck /> Save
               </button>
@@ -84,7 +84,7 @@ export default function ProfilePage() {
                   setEditing(false);
                   setForm({ name: user.name, age: user.age || "", employmentType: user.employmentType || "" });
                 }}
-                className="flex items-center gap-1 px-4 py-2 text-sm rounded-lg bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                className="flex items-center gap-1 px-4 py-2 text-sm rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
               >
                 <FiX /> Cancel
               </button>
@@ -102,20 +102,20 @@ export default function ProfilePage() {
                 <input
                   value={form.name}
                   onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-gray-900 focus:border-blue-500 focus:outline-none"
+                  className="t-bg-input border t-border rounded-lg px-3 py-2 t-text focus:border-blue-500 focus:outline-none"
                 />
               ) : (
-                <h3 className="text-xl font-semibold text-gray-900">{user?.name}</h3>
+                <h3 className="text-xl font-semibold t-text">{user?.name}</h3>
               )}
-              <p className="text-gray-500 flex items-center gap-1 mt-1">
+              <p className="t-text-muted flex items-center gap-1 mt-1">
                 <FiMail className="text-sm" /> {user?.email}
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
-            <div className="glass-card p-4 rounded-xl border border-gray-200">
-              <div className="flex items-center gap-2 text-gray-500 text-sm mb-1">
+            <div className="glass-card p-4 rounded-xl border t-border">
+              <div className="flex items-center gap-2 t-text-muted text-sm mb-1">
                 <FiCalendar /> Age
               </div>
               {editing ? (
@@ -123,23 +123,23 @@ export default function ProfilePage() {
                   type="number"
                   value={form.age}
                   onChange={(e) => setForm({ ...form, age: e.target.value })}
-                  className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-1 text-gray-900 w-full focus:border-blue-500 focus:outline-none"
+                  className="t-bg-input border t-border rounded-lg px-3 py-1 t-text w-full focus:border-blue-500 focus:outline-none"
                   min={18}
                   max={120}
                 />
               ) : (
-                <div className="text-gray-900 font-semibold text-lg">{user?.age || "—"}</div>
+                <div className="t-text font-semibold text-lg">{user?.age || "—"}</div>
               )}
             </div>
-            <div className="glass-card p-4 rounded-xl border border-gray-200">
-              <div className="flex items-center gap-2 text-gray-500 text-sm mb-1">
+            <div className="glass-card p-4 rounded-xl border t-border">
+              <div className="flex items-center gap-2 t-text-muted text-sm mb-1">
                 <FiBriefcase /> Employment
               </div>
               {editing ? (
                 <select
                   value={form.employmentType}
                   onChange={(e) => setForm({ ...form, employmentType: e.target.value })}
-                  className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-1 text-gray-900 w-full focus:border-blue-500 focus:outline-none appearance-none"
+                  className="t-bg-input border t-border rounded-lg px-3 py-1 t-text w-full focus:border-blue-500 focus:outline-none appearance-none"
                 >
                   <option value="">Select</option>
                   {EMPLOYMENT_TYPES.map((t) => (
@@ -147,7 +147,7 @@ export default function ProfilePage() {
                   ))}
                 </select>
               ) : (
-                <div className="text-gray-900 font-semibold text-lg">{user?.employmentType || "—"}</div>
+                <div className="t-text font-semibold text-lg">{user?.employmentType || "—"}</div>
               )}
             </div>
           </div>
@@ -158,24 +158,24 @@ export default function ProfilePage() {
       <div className="grid md:grid-cols-2 gap-6 mb-8" data-aos="fade-up" data-aos-delay="100">
         <button
           onClick={() => navigate("/apply")}
-          className="glass-card p-6 rounded-xl border border-gray-200 hover:border-cyan-400 transition-all group text-left hover:shadow-md"
+          className="glass-card p-6 rounded-xl border t-border hover:border-cyan-400 transition-all group text-left hover:shadow-md"
         >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-gray-900 font-semibold text-lg mb-1">Apply for New Loan</h3>
-              <p className="text-gray-500 text-sm">Submit a new loan application for AI prediction</p>
+              <h3 className="t-text font-semibold text-lg mb-1">Apply for New Loan</h3>
+              <p className="t-text-muted text-sm">Submit a new loan application for AI prediction</p>
             </div>
             <FiArrowRight className="text-cyan-600 text-xl group-hover:translate-x-1 transition-transform" />
           </div>
         </button>
         <button
           onClick={() => navigate("/compare")}
-          className="glass-card p-6 rounded-xl border border-gray-200 hover:border-cyan-400 transition-all group text-left hover:shadow-md"
+          className="glass-card p-6 rounded-xl border t-border hover:border-cyan-400 transition-all group text-left hover:shadow-md"
         >
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-gray-900 font-semibold text-lg mb-1">Model Comparison</h3>
-              <p className="text-gray-500 text-sm">View KNN vs Random Forest performance metrics</p>
+              <h3 className="t-text font-semibold text-lg mb-1">Model Comparison</h3>
+              <p className="t-text-muted text-sm">View KNN vs Random Forest performance metrics</p>
             </div>
             <FiArrowRight className="text-cyan-600 text-xl group-hover:translate-x-1 transition-transform" />
           </div>
@@ -183,12 +183,12 @@ export default function ProfilePage() {
       </div>
 
       {/* Past Applied Loans */}
-      <div className="glass-card p-8 rounded-2xl border border-gray-200 shadow-sm" data-aos="fade-up" data-aos-delay="200">
+      <div className="glass-card p-8 rounded-2xl border t-border shadow-sm" data-aos="fade-up" data-aos-delay="200">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-3">
+          <h2 className="text-2xl font-bold t-text flex items-center gap-3">
             <FiFileText className="text-cyan-600" /> Past Applied Loans
           </h2>
-          <span className="px-3 py-1 rounded-full bg-cyan-50 text-cyan-700 text-sm font-medium">
+          <span className="px-3 py-1 rounded-full bg-cyan-50 dark:bg-cyan-900/20 text-cyan-700 dark:text-cyan-400 text-sm font-medium">
             {loans.length} Applications
           </span>
         </div>
@@ -199,7 +199,7 @@ export default function ProfilePage() {
           </div>
         ) : loans.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">No loan applications yet</p>
+            <p className="t-text-muted mb-4">No loan applications yet</p>
             <Link
               to="/apply"
               className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-semibold text-white hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
@@ -211,33 +211,33 @@ export default function ProfilePage() {
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-200">
-                  <th className="text-left py-3 px-4 text-gray-500 font-medium">Date</th>
-                  <th className="text-left py-3 px-4 text-gray-500 font-medium">Loan Type</th>
-                  <th className="text-left py-3 px-4 text-gray-500 font-medium">Loan Amount</th>
-                  <th className="text-left py-3 px-4 text-gray-500 font-medium">Income</th>
-                  <th className="text-left py-3 px-4 text-gray-500 font-medium">Credit</th>
-                  <th className="text-left py-3 px-4 text-gray-500 font-medium">KNN</th>
-                  <th className="text-left py-3 px-4 text-gray-500 font-medium">RF</th>
-                  <th className="text-left py-3 px-4 text-gray-500 font-medium">Docs</th>
+                <tr className="border-b t-border">
+                  <th className="text-left py-3 px-4 t-text-muted font-medium">Date</th>
+                  <th className="text-left py-3 px-4 t-text-muted font-medium">Loan Type</th>
+                  <th className="text-left py-3 px-4 t-text-muted font-medium">Loan Amount</th>
+                  <th className="text-left py-3 px-4 t-text-muted font-medium">Income</th>
+                  <th className="text-left py-3 px-4 t-text-muted font-medium">Credit</th>
+                  <th className="text-left py-3 px-4 t-text-muted font-medium">KNN</th>
+                  <th className="text-left py-3 px-4 t-text-muted font-medium">RF</th>
+                  <th className="text-left py-3 px-4 t-text-muted font-medium">Docs</th>
                 </tr>
               </thead>
               <tbody>
                 {loans.map((loan) => (
-                  <tr key={loan._id} className="border-b border-gray-100 hover:bg-gray-50 transition-colors">
-                    <td className="py-3 px-4 text-gray-600">
+                  <tr key={loan._id} className="border-b border-black/5 dark:border-white/5 hover:bg-black/[0.02] dark:hover:bg-white/[0.02] transition-colors">
+                    <td className="py-3 px-4 t-text-secondary">
                       {new Date(loan.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="py-3 px-4 text-gray-600">
+                    <td className="py-3 px-4 t-text-secondary">
                       {loan.loanType || "—"}
                     </td>
-                    <td className="py-3 px-4 text-gray-900 font-medium">
+                    <td className="py-3 px-4 t-text font-medium">
                       ₹{loan.input?.loan_amount?.toLocaleString()}
                     </td>
-                    <td className="py-3 px-4 text-gray-600">
+                    <td className="py-3 px-4 t-text-secondary">
                       ₹{loan.input?.applicant_income?.toLocaleString()}
                     </td>
-                    <td className="py-3 px-4 text-gray-600">
+                    <td className="py-3 px-4 t-text-secondary">
                       {loan.input?.credit_history ? "Good" : "Bad"}
                     </td>
                     <td className="py-3 px-4">
@@ -246,7 +246,7 @@ export default function ProfilePage() {
                     <td className="py-3 px-4">
                       <Badge status={loan.results?.rf?.prediction} />
                     </td>
-                    <td className="py-3 px-4 text-gray-500">
+                    <td className="py-3 px-4 t-text-muted">
                       {loan.supportDocs?.length || 0} files
                     </td>
                   </tr>
