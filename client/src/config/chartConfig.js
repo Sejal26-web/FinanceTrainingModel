@@ -4,16 +4,16 @@ export const darkChartOptions = {
   plugins: {
     legend: {
       labels: {
-        color: "#8b9ec2",
+        color: "#475569",
         font: { family: "Inter, system-ui", size: 12 },
         padding: 16,
       },
     },
     tooltip: {
-      backgroundColor: "rgba(10, 10, 30, 0.92)",
-      titleColor: "#e2e8f0",
-      bodyColor: "#8b9ec2",
-      borderColor: "rgba(99, 102, 241, 0.2)",
+      backgroundColor: "rgba(255, 255, 255, 0.95)",
+      titleColor: "#0f172a",
+      bodyColor: "#475569",
+      borderColor: "rgba(0, 0, 0, 0.1)",
       borderWidth: 1,
       cornerRadius: 8,
       padding: 12,
@@ -21,14 +21,14 @@ export const darkChartOptions = {
   },
   scales: {
     x: {
-      ticks: { color: "#4f5d7a", font: { size: 11 } },
-      grid: { color: "rgba(99, 102, 241, 0.04)" },
-      border: { color: "rgba(99, 102, 241, 0.08)" },
+      ticks: { color: "#64748b", font: { size: 11 } },
+      grid: { color: "rgba(0, 0, 0, 0.04)" },
+      border: { color: "rgba(0, 0, 0, 0.08)" },
     },
     y: {
-      ticks: { color: "#4f5d7a", font: { size: 11 } },
-      grid: { color: "rgba(99, 102, 241, 0.04)" },
-      border: { color: "rgba(99, 102, 241, 0.08)" },
+      ticks: { color: "#64748b", font: { size: 11 } },
+      grid: { color: "rgba(0, 0, 0, 0.04)" },
+      border: { color: "rgba(0, 0, 0, 0.08)" },
       beginAtZero: true,
       max: 100,
     },
@@ -40,13 +40,13 @@ export const radarChartOptions = {
   maintainAspectRatio: false,
   plugins: {
     legend: {
-      labels: { color: "#8b9ec2", font: { family: "Inter", size: 12 }, padding: 16 },
+      labels: { color: "#475569", font: { family: "Inter", size: 12 }, padding: 16 },
     },
     tooltip: {
-      backgroundColor: "rgba(10, 10, 30, 0.92)",
-      titleColor: "#e2e8f0",
-      bodyColor: "#8b9ec2",
-      borderColor: "rgba(99, 102, 241, 0.2)",
+      backgroundColor: "rgba(255, 255, 255, 0.95)",
+      titleColor: "#0f172a",
+      bodyColor: "#475569",
+      borderColor: "rgba(0, 0, 0, 0.1)",
       borderWidth: 1,
       cornerRadius: 8,
       padding: 12,
@@ -54,10 +54,10 @@ export const radarChartOptions = {
   },
   scales: {
     r: {
-      angleLines: { color: "rgba(99, 102, 241, 0.08)" },
-      grid: { color: "rgba(99, 102, 241, 0.08)" },
-      ticks: { color: "#4f5d7a", backdropColor: "transparent", font: { size: 10 } },
-      pointLabels: { color: "#8b9ec2", font: { size: 11 } },
+      angleLines: { color: "rgba(0, 0, 0, 0.08)" },
+      grid: { color: "rgba(0, 0, 0, 0.08)" },
+      ticks: { color: "#64748b", backdropColor: "transparent", font: { size: 10 } },
+      pointLabels: { color: "#475569", font: { size: 11 } },
       min: 0,
       max: 100,
     },
@@ -71,13 +71,13 @@ export const doughnutChartOptions = {
   plugins: {
     legend: {
       position: "bottom",
-      labels: { color: "#8b9ec2", padding: 14, font: { size: 11 } },
+      labels: { color: "#475569", padding: 14, font: { size: 11 } },
     },
     tooltip: {
-      backgroundColor: "rgba(10, 10, 30, 0.92)",
-      titleColor: "#e2e8f0",
-      bodyColor: "#8b9ec2",
-      borderColor: "rgba(99, 102, 241, 0.2)",
+      backgroundColor: "rgba(255, 255, 255, 0.95)",
+      titleColor: "#0f172a",
+      bodyColor: "#475569",
+      borderColor: "rgba(0, 0, 0, 0.1)",
       borderWidth: 1,
       cornerRadius: 8,
     },

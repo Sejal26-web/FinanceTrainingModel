@@ -27,6 +27,8 @@ import {
   FiTrendingUp,
   FiAward,
   FiLayers,
+  FiAlertTriangle,
+  FiShield,
 } from "react-icons/fi";
 
 ChartJS.register(
@@ -56,7 +58,7 @@ function CircularProgress({ value, size = 120, stroke = 8, color, label }) {
             cy={size / 2}
             r={radius}
             fill="none"
-            stroke="rgba(255,255,255,0.05)"
+            stroke="rgba(0,0,0,0.05)"
             strokeWidth={stroke}
           />
           <circle
@@ -73,10 +75,10 @@ function CircularProgress({ value, size = 120, stroke = 8, color, label }) {
           />
         </svg>
         <div className="absolute inset-0 flex items-center justify-center">
-          <span className="text-2xl font-bold text-white">{value}%</span>
+          <span className="text-2xl font-bold text-gray-900">{value}%</span>
         </div>
       </div>
-      <span className="text-gray-400 text-sm">{label}</span>
+      <span className="text-gray-500 text-sm">{label}</span>
     </div>
   );
 }
@@ -99,7 +101,7 @@ export default function ResultsPage() {
 
   if (!prediction) return null;
 
-  const { results } = prediction;
+  const { results, riskAssessment } = prediction;
   const knn = results.knn;
   const rf = results.rf;
 
@@ -250,37 +252,94 @@ export default function ResultsPage() {
       <div className="flex items-center justify-between" data-aos="fade-up">
         <button
           onClick={() => navigate("/apply")}
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/5 transition-all"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-all"
         >
           <FiArrowLeft size={16} /> Back
         </button>
         <Link
           to="/profile"
-          className="flex items-center gap-2 px-4 py-2 rounded-lg text-cyan-400 hover:text-cyan-300 hover:bg-cyan-500/5 transition-all"
+          className="flex items-center gap-2 px-4 py-2 rounded-lg text-cyan-600 hover:text-cyan-700 hover:bg-cyan-50 transition-all"
         >
           All Loans <FiArrowRight size={16} />
         </Link>
       </div>
 
+      {/* ── Risk Assessment Alert ── */}
+      {riskAssessment && riskAssessment.flags?.length > 0 && (
+        <div
+          className={`rounded-2xl border p-6 ${
+            riskAssessment.riskLevel === "High"
+              ? "bg-red-50 border-red-200"
+              : riskAssessment.riskLevel === "Medium"
+              ? "bg-amber-50 border-amber-200"
+              : "bg-green-50 border-green-200"
+          }`}
+          data-aos="fade-up"
+        >
+          <div className="flex items-center gap-3 mb-4">
+            <div
+              className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                riskAssessment.riskLevel === "High"
+                  ? "bg-red-100 text-red-600"
+                  : riskAssessment.riskLevel === "Medium"
+                  ? "bg-amber-100 text-amber-600"
+                  : "bg-green-100 text-green-600"
+              }`}
+            >
+              <FiShield size={20} />
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                Risk Assessment
+                <span
+                  className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                    riskAssessment.riskLevel === "High"
+                      ? "bg-red-100 text-red-700"
+                      : riskAssessment.riskLevel === "Medium"
+                      ? "bg-amber-100 text-amber-700"
+                      : "bg-green-100 text-green-700"
+                  }`}
+                >
+                  {riskAssessment.riskLevel} Risk — Score: {riskAssessment.riskScore}/100
+                </span>
+              </h3>
+              {riskAssessment.autoRejected && (
+                <p className="text-red-600 text-sm font-medium mt-1">
+                  Application auto-rejected due to high risk score
+                </p>
+              )}
+            </div>
+          </div>
+          <ul className="space-y-2">
+            {riskAssessment.flags.map((flag, i) => (
+              <li key={i} className="flex items-start gap-2 text-sm text-gray-700">
+                <FiAlertTriangle className="text-amber-500 mt-0.5 flex-shrink-0" />
+                {flag}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
       {/* ── Hero Verdict ── */}
       <div
         className={`relative overflow-hidden rounded-3xl border p-8 md:p-12 text-center ${
           finalVerdict === "Approved"
-            ? "border-green-500/20 bg-gradient-to-br from-green-500/5 via-transparent to-emerald-500/5"
+            ? "border-green-200 bg-gradient-to-br from-green-50 via-white to-emerald-50"
             : finalVerdict === "Rejected"
-            ? "border-red-500/20 bg-gradient-to-br from-red-500/5 via-transparent to-rose-500/5"
-            : "border-yellow-500/20 bg-gradient-to-br from-yellow-500/5 via-transparent to-amber-500/5"
+            ? "border-red-200 bg-gradient-to-br from-red-50 via-white to-rose-50"
+            : "border-yellow-200 bg-gradient-to-br from-yellow-50 via-white to-amber-50"
         }`}
         data-aos="fade-up"
       >
         {/* Subtle glow */}
         <div
-          className={`absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 rounded-full blur-3xl opacity-20 ${
+          className={`absolute top-0 left-1/2 -translate-x-1/2 w-96 h-32 rounded-full blur-3xl opacity-10 ${
             finalVerdict === "Approved"
-              ? "bg-green-500"
+              ? "bg-green-400"
               : finalVerdict === "Rejected"
-              ? "bg-red-500"
-              : "bg-yellow-500"
+              ? "bg-red-400"
+              : "bg-yellow-400"
           }`}
         />
 
@@ -288,10 +347,10 @@ export default function ResultsPage() {
           <div
             className={`inline-flex items-center justify-center w-20 h-20 rounded-full mb-6 ${
               finalVerdict === "Approved"
-                ? "bg-green-500/10 text-green-400"
+                ? "bg-green-100 text-green-600"
                 : finalVerdict === "Rejected"
-                ? "bg-red-500/10 text-red-400"
-                : "bg-yellow-500/10 text-yellow-400"
+                ? "bg-red-100 text-red-600"
+                : "bg-yellow-100 text-yellow-600"
             }`}
           >
             {finalVerdict === "Approved" ? (
@@ -303,22 +362,22 @@ export default function ResultsPage() {
             )}
           </div>
 
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-3">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">
             Loan{" "}
             <span
               className={
                 finalVerdict === "Approved"
-                  ? "text-green-400"
+                  ? "text-green-600"
                   : finalVerdict === "Rejected"
-                  ? "text-red-400"
-                  : "text-yellow-400"
+                  ? "text-red-600"
+                  : "text-yellow-600"
               }
             >
               {finalVerdict === "Mixed" ? "Under Review" : finalVerdict}
             </span>
           </h1>
 
-          <p className="text-gray-400 text-lg max-w-lg mx-auto mb-8">
+          <p className="text-gray-500 text-lg max-w-lg mx-auto mb-8">
             {bothAgree
               ? `Both KNN and Random Forest models agree on this prediction with high confidence.`
               : `The two models produced different results. Review the detailed breakdown below.`}
@@ -349,7 +408,7 @@ export default function ResultsPage() {
           <div
             key={m.name}
             className={`glass-card rounded-2xl border overflow-hidden ${
-              m.approved ? "border-green-500/15" : "border-red-500/15"
+              m.approved ? "border-green-200" : "border-red-200"
             }`}
           >
             {/* Color strip */}
@@ -365,20 +424,20 @@ export default function ResultsPage() {
                 <div className="flex items-center gap-3">
                   <div
                     className={`w-10 h-10 rounded-lg flex items-center justify-center ${
-                      m.accent === "cyan" ? "bg-cyan-500/10" : "bg-blue-500/10"
+                      m.accent === "cyan" ? "bg-cyan-50" : "bg-blue-50"
                     }`}
                   >
                     <FiActivity
-                      className={m.accent === "cyan" ? "text-cyan-400" : "text-blue-400"}
+                      className={m.accent === "cyan" ? "text-cyan-600" : "text-blue-600"}
                     />
                   </div>
-                  <h3 className="text-lg font-semibold text-white">{m.name}</h3>
+                  <h3 className="text-lg font-semibold text-gray-900">{m.name}</h3>
                 </div>
                 <span
                   className={`px-3 py-1 rounded-full text-xs font-semibold ${
                     m.approved
-                      ? "bg-green-500/10 text-green-400 border border-green-500/20"
-                      : "bg-red-500/10 text-red-400 border border-red-500/20"
+                      ? "bg-green-50 text-green-700 border border-green-200"
+                      : "bg-red-50 text-red-700 border border-red-200"
                   }`}
                 >
                   {m.model.prediction}
@@ -389,10 +448,10 @@ export default function ResultsPage() {
               <div className="space-y-3">
                 <div>
                   <div className="flex items-center justify-between text-sm mb-1.5">
-                    <span className="text-gray-400">Approval Probability</span>
-                    <span className="text-green-400 font-semibold">{m.model.probabilities.approved}%</span>
+                    <span className="text-gray-500">Approval Probability</span>
+                    <span className="text-green-600 font-semibold">{m.model.probabilities.approved}%</span>
                   </div>
-                  <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full transition-all duration-1000"
                       style={{ width: `${m.model.probabilities.approved}%` }}
@@ -401,10 +460,10 @@ export default function ResultsPage() {
                 </div>
                 <div>
                   <div className="flex items-center justify-between text-sm mb-1.5">
-                    <span className="text-gray-400">Rejection Probability</span>
-                    <span className="text-red-400 font-semibold">{m.model.probabilities.rejected}%</span>
+                    <span className="text-gray-500">Rejection Probability</span>
+                    <span className="text-red-600 font-semibold">{m.model.probabilities.rejected}%</span>
                   </div>
-                  <div className="h-2.5 bg-white/5 rounded-full overflow-hidden">
+                  <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
                     <div
                       className="h-full bg-gradient-to-r from-red-500 to-rose-400 rounded-full transition-all duration-1000"
                       style={{ width: `${m.model.probabilities.rejected}%` }}
@@ -420,14 +479,14 @@ export default function ResultsPage() {
       {/* ── Charts Row 1: Confidence + Probability Donuts ── */}
       <div className="grid lg:grid-cols-5 gap-6">
         <div
-          className="lg:col-span-3 glass-card p-6 rounded-2xl border border-white/5"
+          className="lg:col-span-3 glass-card p-6 rounded-2xl border border-gray-200"
           data-aos="fade-up"
           data-aos-delay="150"
         >
-          <h3 className="text-base font-semibold text-white mb-1 flex items-center gap-2">
-            <FiBarChart2 className="text-cyan-400" /> Confidence Comparison
+          <h3 className="text-base font-semibold text-gray-900 mb-1 flex items-center gap-2">
+            <FiBarChart2 className="text-cyan-600" /> Confidence Comparison
           </h3>
-          <p className="text-gray-500 text-xs mb-4">How confident each model is in its prediction</p>
+          <p className="text-gray-400 text-xs mb-4">How confident each model is in its prediction</p>
           <div className="h-64">
             <Bar
               data={confidenceData}
@@ -440,24 +499,24 @@ export default function ResultsPage() {
         </div>
 
         <div
-          className="lg:col-span-2 glass-card p-6 rounded-2xl border border-white/5"
+          className="lg:col-span-2 glass-card p-6 rounded-2xl border border-gray-200"
           data-aos="fade-up"
           data-aos-delay="200"
         >
-          <h3 className="text-base font-semibold text-white mb-1">Probability Split</h3>
-          <p className="text-gray-500 text-xs mb-4">Approval vs rejection breakdown per model</p>
+          <h3 className="text-base font-semibold text-gray-900 mb-1">Probability Split</h3>
+          <p className="text-gray-400 text-xs mb-4">Approval vs rejection breakdown per model</p>
           <div className="grid grid-cols-2 gap-4">
             <div className="flex flex-col items-center">
               <div className="h-40 w-full">
                 <Doughnut data={knnDoughnutData} options={doughnutChartOptions} />
               </div>
-              <span className="text-gray-400 text-xs mt-2 font-medium">KNN</span>
+              <span className="text-gray-500 text-xs mt-2 font-medium">KNN</span>
             </div>
             <div className="flex flex-col items-center">
               <div className="h-40 w-full">
                 <Doughnut data={rfDoughnutData} options={doughnutChartOptions} />
               </div>
-              <span className="text-gray-400 text-xs mt-2 font-medium">Random Forest</span>
+              <span className="text-gray-500 text-xs mt-2 font-medium">Random Forest</span>
             </div>
           </div>
         </div>
@@ -468,8 +527,8 @@ export default function ResultsPage() {
         <>
           {/* Section Heading */}
           <div className="text-center pt-4" data-aos="fade-up">
-            <h2 className="text-2xl font-bold text-white mb-1">Model Performance Metrics</h2>
-            <p className="text-gray-500 text-sm">
+            <h2 className="text-2xl font-bold text-gray-900 mb-1">Model Performance Metrics</h2>
+            <p className="text-gray-400 text-sm">
               Accuracy, precision, recall and more — KNN vs Random Forest
             </p>
           </div>
@@ -479,20 +538,20 @@ export default function ResultsPage() {
             {metricsList.map((m) => (
               <div
                 key={m.label}
-                className="glass-card rounded-xl border border-white/5 p-4 hover:border-cyan-500/20 transition-colors"
+                className="glass-card rounded-xl border border-gray-200 p-4 hover:border-cyan-400 transition-colors hover:shadow-sm"
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <m.icon className="text-cyan-400 text-sm" />
-                  <span className="text-gray-400 text-xs font-medium">{m.label}</span>
+                  <m.icon className="text-cyan-600 text-sm" />
+                  <span className="text-gray-500 text-xs font-medium">{m.label}</span>
                 </div>
                 <div className="flex items-end justify-between">
                   <div>
-                    <div className="text-xs text-gray-500 mb-0.5">KNN</div>
-                    <div className="text-lg font-bold text-cyan-400">{m.knn}%</div>
+                    <div className="text-xs text-gray-400 mb-0.5">KNN</div>
+                    <div className="text-lg font-bold text-cyan-600">{m.knn}%</div>
                   </div>
                   <div className="text-right">
-                    <div className="text-xs text-gray-500 mb-0.5">RF</div>
-                    <div className="text-lg font-bold text-blue-400">{m.rf}%</div>
+                    <div className="text-xs text-gray-400 mb-0.5">RF</div>
+                    <div className="text-lg font-bold text-blue-600">{m.rf}%</div>
                   </div>
                 </div>
               </div>
@@ -503,12 +562,12 @@ export default function ResultsPage() {
           <div className="grid lg:grid-cols-2 gap-6">
             {radarData && (
               <div
-                className="glass-card p-6 rounded-2xl border border-white/5"
+                className="glass-card p-6 rounded-2xl border border-gray-200"
                 data-aos="fade-up"
                 data-aos-delay="150"
               >
-                <h3 className="text-base font-semibold text-white mb-1">Performance Radar</h3>
-                <p className="text-gray-500 text-xs mb-4">
+                <h3 className="text-base font-semibold text-gray-900 mb-1">Performance Radar</h3>
+                <p className="text-gray-400 text-xs mb-4">
                   Multi-metric overlay comparing both models
                 </p>
                 <div className="h-72">
@@ -519,14 +578,14 @@ export default function ResultsPage() {
 
             {featureImportanceData && (
               <div
-                className="glass-card p-6 rounded-2xl border border-white/5"
+                className="glass-card p-6 rounded-2xl border border-gray-200"
                 data-aos="fade-up"
                 data-aos-delay="200"
               >
-                <h3 className="text-base font-semibold text-white mb-1">
+                <h3 className="text-base font-semibold text-gray-900 mb-1">
                   Feature Importance (RF)
                 </h3>
-                <p className="text-gray-500 text-xs mb-4">
+                <p className="text-gray-400 text-xs mb-4">
                   Which factors most influence the Random Forest decision
                 </p>
                 <div className="h-72">
@@ -578,13 +637,13 @@ export default function ResultsPage() {
       >
         <button
           onClick={() => navigate("/apply")}
-          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-white border border-white/10 hover:bg-white/5 transition-all"
+          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-gray-700 border border-gray-300 hover:bg-gray-50 transition-all"
         >
           <FiArrowLeft size={16} /> New Application
         </button>
         <Link
           to="/compare"
-          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
+          className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-semibold text-white bg-gradient-to-r from-cyan-600 to-blue-600 hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
         >
           Full Model Comparison <FiArrowRight size={16} />
         </Link>

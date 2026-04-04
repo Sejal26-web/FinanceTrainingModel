@@ -90,11 +90,11 @@ export default function PredictionResult({ result }) {
 
 function ResultCard({ name, result, gradient }) {
   return (
-    <div className={`bg-gradient-to-br ${gradient} rounded-xl border border-white/5 p-6 text-center`}>
-      <p className="text-xs text-text-muted uppercase tracking-widest font-semibold mb-3">{name}</p>
+    <div className={`bg-gradient-to-br ${gradient} rounded-xl border border-gray-200 p-6 text-center shadow-sm`}>
+      <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-3">{name}</p>
       <Badge status={result.prediction} className="text-base px-5 py-2 glow-pulse" />
-      <p className="text-text-secondary text-sm mt-3">
-        Confidence: <span className="text-text-primary font-semibold">{result.confidence}%</span>
+      <p className="text-gray-500 text-sm mt-3">
+        Confidence: <span className="text-gray-900 font-semibold">{result.confidence}%</span>
       </p>
     </div>
   );

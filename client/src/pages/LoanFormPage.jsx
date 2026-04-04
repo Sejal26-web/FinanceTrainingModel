@@ -91,28 +91,28 @@ export default function LoanFormPage() {
   };
 
   const inputClass =
-    "w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500/50 focus:ring-1 focus:ring-cyan-500/50 transition-colors";
+    "w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition-colors";
   const selectClass = `${inputClass} appearance-none`;
-  const labelClass = "block text-gray-300 text-sm font-medium mb-2";
+  const labelClass = "block text-gray-700 text-sm font-medium mb-2";
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="text-center mb-8" data-aos="fade-up">
-        <h1 className="text-3xl font-bold text-white mb-2">Loan Application</h1>
-        <p className="text-gray-400">Fill in your details to get an AI-powered loan prediction</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">Loan Application</h1>
+        <p className="text-gray-500">Fill in your details to get an AI-powered loan prediction</p>
       </div>
 
       {error && (
-        <div className="mb-6 p-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm" data-aos="fade-up">
+        <div className="mb-6 p-4 rounded-xl bg-red-50 border border-red-200 text-red-600 text-sm" data-aos="fade-up">
           {error}
         </div>
       )}
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Personal Information */}
-        <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up">
-          <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-            <FiUser className="text-cyan-400" /> Personal Information
+        <div className="glass-card p-6 rounded-2xl border border-gray-200" data-aos="fade-up">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <FiUser className="text-cyan-600" /> Personal Information
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -171,9 +171,9 @@ export default function LoanFormPage() {
         </div>
 
         {/* Loan Details */}
-        <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up" data-aos-delay="100">
-          <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-            <FiFileText className="text-cyan-400" /> Loan Details
+        <div className="glass-card p-6 rounded-2xl border border-gray-200" data-aos="fade-up" data-aos-delay="100">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <FiFileText className="text-cyan-600" /> Loan Details
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -283,12 +283,12 @@ export default function LoanFormPage() {
         </div>
 
         {/* Upload Support Documents */}
-        <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up" data-aos-delay="200">
-          <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-            <FiUpload className="text-cyan-400" /> Upload Support Documents
+        <div className="glass-card p-6 rounded-2xl border border-gray-200" data-aos="fade-up" data-aos-delay="200">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
+            <FiUpload className="text-cyan-600" /> Upload Support Documents
           </h2>
 
-          <div className="border-2 border-dashed border-white/10 rounded-xl p-8 text-center hover:border-cyan-500/30 transition-colors">
+          <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-cyan-500 transition-colors">
             <input
               type="file"
               id="fileUpload"
@@ -298,9 +298,9 @@ export default function LoanFormPage() {
               className="hidden"
             />
             <label htmlFor="fileUpload" className="cursor-pointer">
-              <FiUpload className="text-3xl text-gray-500 mx-auto mb-3" />
-              <p className="text-gray-400 mb-1">Click to upload or drag and drop</p>
-              <p className="text-gray-500 text-sm">PDF, JPEG, PNG, DOC (max 5MB each, up to 5 files)</p>
+              <FiUpload className="text-3xl text-gray-400 mx-auto mb-3" />
+              <p className="text-gray-600 mb-1">Click to upload or drag and drop</p>
+              <p className="text-gray-400 text-sm">PDF, JPEG, PNG, DOC (max 5MB each, up to 5 files)</p>
             </label>
           </div>
 
@@ -309,17 +309,17 @@ export default function LoanFormPage() {
               {files.map((file, i) => (
                 <div
                   key={i}
-                  className="flex items-center justify-between px-4 py-3 bg-white/5 rounded-lg border border-white/10"
+                  className="flex items-center justify-between px-4 py-3 bg-gray-50 rounded-lg border border-gray-200"
                 >
                   <div className="flex items-center gap-3">
-                    <FiFileText className="text-cyan-400" />
-                    <span className="text-gray-300 text-sm truncate max-w-xs">{file.name}</span>
-                    <span className="text-gray-500 text-xs">({(file.size / 1024).toFixed(1)} KB)</span>
+                    <FiFileText className="text-cyan-600" />
+                    <span className="text-gray-700 text-sm truncate max-w-xs">{file.name}</span>
+                    <span className="text-gray-400 text-xs">({(file.size / 1024).toFixed(1)} KB)</span>
                   </div>
                   <button
                     type="button"
                     onClick={() => removeFile(i)}
-                    className="text-red-400 hover:text-red-300 transition-colors"
+                    className="text-red-500 hover:text-red-600 transition-colors"
                   >
                     <FiX />
                   </button>
@@ -334,7 +334,7 @@ export default function LoanFormPage() {
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl font-semibold text-white text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 disabled:opacity-50"
+            className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-semibold text-white text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300 disabled:opacity-50"
           >
             {loading ? (
               <>

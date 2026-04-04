@@ -66,7 +66,7 @@ export default function PredictionForm() {
   };
 
   const inputBase =
-    "w-full px-3.5 py-2.5 bg-white/5 border border-white/10 rounded-lg text-text-primary text-sm outline-none transition-all duration-200 focus:border-accent-blue/50 focus:ring-1 focus:ring-accent-blue/20 placeholder:text-text-muted";
+    "w-full px-3.5 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-gray-900 text-sm outline-none transition-all duration-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-200 placeholder:text-gray-400";
 
   return (
     <>

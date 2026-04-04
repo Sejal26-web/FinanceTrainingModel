@@ -132,7 +132,7 @@ export default function ModelComparison() {
       ...doughnutChartOptions.plugins,
       legend: {
         position: "right",
-        labels: { color: "#8b9ec2", padding: 8, font: { size: 10 }, boxWidth: 12, borderRadius: 2 },
+        labels: { color: "#475569", padding: 8, font: { size: 10 }, boxWidth: 12, borderRadius: 2 },
       },
     },
   };

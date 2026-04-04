@@ -25,16 +25,16 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 glass-card border-b border-white/5">
+    <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 group">
-            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
+            <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-cyan-600 to-blue-600 flex items-center justify-center">
               <span className="text-white font-bold text-sm">LP</span>
             </div>
-            <span className="text-white font-bold text-lg hidden sm:block">
-              LoanPredict <span className="text-cyan-400">AI</span>
+            <span className="text-gray-900 font-bold text-lg hidden sm:block">
+              LoanPredict <span className="text-cyan-600">AI</span>
             </span>
           </Link>
 
@@ -48,8 +48,8 @@ export default function Navbar() {
                   to={link.to}
                   className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-cyan-500/10 text-cyan-400"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                      ? "bg-cyan-50 text-cyan-700"
+                      : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   <link.icon className="text-sm" />
@@ -63,12 +63,12 @@ export default function Navbar() {
           <div className="hidden md:flex items-center gap-3">
             {user ? (
               <div className="flex items-center gap-3">
-                <span className="text-gray-400 text-sm">
-                  Hi, <span className="text-white font-medium">{user.name?.split(" ")[0]}</span>
+                <span className="text-gray-500 text-sm">
+                  Hi, <span className="text-gray-900 font-medium">{user.name?.split(" ")[0]}</span>
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors"
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg text-sm text-red-500 hover:bg-red-50 transition-colors"
                 >
                   <FiLogOut /> Logout
                 </button>
@@ -77,13 +77,13 @@ export default function Navbar() {
               <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-lg text-sm text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                  className="px-4 py-2 rounded-lg text-sm text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors"
                 >
                   Sign In
                 </Link>
                 <Link
                   to="/register"
-                  className="px-4 py-2 rounded-lg text-sm bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
+                  className="px-4 py-2 rounded-lg text-sm bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-medium hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
                 >
                   Sign Up
                 </Link>
@@ -94,7 +94,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden text-gray-400 hover:text-white p-2"
+            className="md:hidden text-gray-500 hover:text-gray-900 p-2"
           >
             {mobileOpen ? <FiX size={20} /> : <FiMenu size={20} />}
           </button>
@@ -102,7 +102,7 @@ export default function Navbar() {
 
         {/* Mobile Menu */}
         {mobileOpen && (
-          <div className="md:hidden pb-4 border-t border-white/5 mt-2 pt-4 space-y-1">
+          <div className="md:hidden pb-4 border-t border-gray-200 mt-2 pt-4 space-y-1">
             {visibleLinks.map((link) => {
               const isActive = location.pathname === link.to;
               return (
@@ -112,8 +112,8 @@ export default function Navbar() {
                   onClick={() => setMobileOpen(false)}
                   className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-cyan-500/10 text-cyan-400"
-                      : "text-gray-400 hover:text-white hover:bg-white/5"
+                      ? "bg-cyan-50 text-cyan-700"
+                      : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   <link.icon />
@@ -121,11 +121,11 @@ export default function Navbar() {
                 </Link>
               );
             })}
-            <div className="border-t border-white/5 pt-3 mt-3">
+            <div className="border-t border-gray-200 pt-3 mt-3">
               {user ? (
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-red-400 hover:bg-red-500/10 transition-colors w-full"
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm text-red-500 hover:bg-red-50 transition-colors w-full"
                 >
                   <FiLogOut /> Logout
                 </button>
@@ -134,14 +134,14 @@ export default function Navbar() {
                   <Link
                     to="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-3 text-sm text-gray-300 hover:text-white"
+                    className="block px-4 py-3 text-sm text-gray-600 hover:text-gray-900"
                   >
                     Sign In
                   </Link>
                   <Link
                     to="/register"
                     onClick={() => setMobileOpen(false)}
-                    className="block px-4 py-3 text-sm text-cyan-400"
+                    className="block px-4 py-3 text-sm text-cyan-600"
                   >
                     Sign Up
                   </Link>

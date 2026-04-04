@@ -40,20 +40,20 @@ export default function LandingPage() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center" data-aos="fade-up">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-8">
-              <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-              <span className="text-cyan-400 text-sm font-medium">AI-Powered Loan Prediction</span>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cyan-50 border border-cyan-200 mb-8">
+              <span className="w-2 h-2 rounded-full bg-cyan-500 animate-pulse" />
+              <span className="text-cyan-700 text-sm font-medium">AI-Powered Loan Prediction</span>
             </div>
 
             <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="text-white">Smart Loan</span>
+              <span className="text-gray-900">Smart Loan</span>
               <br />
-              <span className="bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-cyan-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
                 Approval Predictor
               </span>
             </h1>
 
-            <p className="text-lg lg:text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+            <p className="text-lg lg:text-xl text-gray-500 max-w-2xl mx-auto mb-10">
               Leverage advanced machine learning to instantly predict your loan approval chances.
               Powered by KNN and Random Forest algorithms with 97%+ accuracy.
             </p>
@@ -62,7 +62,7 @@ export default function LandingPage() {
               {user ? (
                 <button
                   onClick={() => navigate("/apply")}
-                  className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl font-semibold text-white text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-semibold text-white text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
                 >
                   Apply for Loan
                   <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
@@ -71,14 +71,14 @@ export default function LandingPage() {
                 <>
                   <button
                     onClick={() => navigate("/register")}
-                    className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl font-semibold text-white text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
+                    className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-semibold text-white text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
                   >
                     Get Started
                     <FiArrowRight className="group-hover:translate-x-1 transition-transform" />
                   </button>
                   <button
                     onClick={() => navigate("/login")}
-                    className="inline-flex items-center gap-3 px-8 py-4 border border-white/10 rounded-xl font-semibold text-white text-lg hover:bg-white/5 transition-all duration-300"
+                    className="inline-flex items-center gap-3 px-8 py-4 border border-gray-300 rounded-xl font-semibold text-gray-700 text-lg hover:bg-gray-50 transition-all duration-300"
                   >
                     Sign In
                   </button>
@@ -101,10 +101,10 @@ export default function LandingPage() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="glass-card p-6 text-center rounded-xl border border-white/5"
+                className="glass-card p-6 text-center rounded-xl border border-gray-200"
               >
-                <div className="text-3xl font-bold text-cyan-400">{stat.value}</div>
-                <div className="text-gray-400 text-sm mt-1">{stat.label}</div>
+                <div className="text-3xl font-bold text-cyan-600">{stat.value}</div>
+                <div className="text-gray-500 text-sm mt-1">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -115,10 +115,10 @@ export default function LandingPage() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16" data-aos="fade-up">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Why Choose LoanPredict AI?
             </h2>
-            <p className="text-gray-400 text-lg max-w-xl mx-auto">
+            <p className="text-gray-500 text-lg max-w-xl mx-auto">
               Built with state-of-the-art machine learning models for reliable loan predictions.
             </p>
           </div>
@@ -127,15 +127,15 @@ export default function LandingPage() {
             {features.map((feature, i) => (
               <div
                 key={feature.title}
-                className="glass-card p-6 rounded-xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300 group"
+                className="glass-card p-6 rounded-xl border border-gray-200 hover:border-cyan-400 transition-all duration-300 group hover:shadow-md"
                 data-aos="fade-up"
                 data-aos-delay={i * 100}
               >
-                <div className="w-12 h-12 rounded-lg bg-cyan-500/10 flex items-center justify-center mb-4 group-hover:bg-cyan-500/20 transition-colors">
-                  <feature.icon className="text-cyan-400 text-xl" />
+                <div className="w-12 h-12 rounded-lg bg-cyan-50 flex items-center justify-center mb-4 group-hover:bg-cyan-100 transition-colors">
+                  <feature.icon className="text-cyan-600 text-xl" />
                 </div>
-                <h3 className="text-white font-semibold text-lg mb-2">{feature.title}</h3>
-                <p className="text-gray-400 text-sm leading-relaxed">{feature.desc}</p>
+                <h3 className="text-gray-900 font-semibold text-lg mb-2">{feature.title}</h3>
+                <p className="text-gray-500 text-sm leading-relaxed">{feature.desc}</p>
               </div>
             ))}
           </div>
@@ -146,7 +146,7 @@ export default function LandingPage() {
       <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16" data-aos="fade-up">
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-4">How It Works</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">How It Works</h2>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
@@ -161,9 +161,9 @@ export default function LandingPage() {
                 data-aos="fade-up"
                 data-aos-delay={i * 150}
               >
-                <div className="text-6xl font-bold text-cyan-500/10 mb-4">{item.step}</div>
-                <h3 className="text-white font-semibold text-xl mb-2">{item.title}</h3>
-                <p className="text-gray-400">{item.desc}</p>
+                <div className="text-6xl font-bold text-cyan-100 mb-4">{item.step}</div>
+                <h3 className="text-gray-900 font-semibold text-xl mb-2">{item.title}</h3>
+                <p className="text-gray-500">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -173,14 +173,14 @@ export default function LandingPage() {
       {/* CTA */}
       <section className="py-20">
         <div className="max-w-3xl mx-auto px-4 text-center" data-aos="fade-up">
-          <div className="glass-card p-12 rounded-2xl border border-cyan-500/20">
-            <h2 className="text-3xl font-bold text-white mb-4">Ready to Check Your Eligibility?</h2>
-            <p className="text-gray-400 mb-8">
+          <div className="glass-card p-12 rounded-2xl border border-cyan-200 shadow-md">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Ready to Check Your Eligibility?</h2>
+            <p className="text-gray-500 mb-8">
               Join thousands of users who have used our AI system to predict their loan approval.
             </p>
             <button
               onClick={() => navigate(user ? "/apply" : "/register")}
-              className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-xl font-semibold text-white text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 rounded-xl font-semibold text-white text-lg hover:shadow-lg hover:shadow-cyan-500/25 transition-all duration-300"
             >
               {user ? "Apply Now" : "Get Started Free"}
               <FiArrowRight className="group-hover:translate-x-1 transition-transform" />

@@ -1,11 +1,33 @@
 const Prediction = require("../models/Prediction");
 const { runPythonPrediction } = require("./mlService");
+const { assessRisk } = require("./riskAssessmentService");
 const AppError = require("../utils/AppError");
 
 const HISTORY_LIMIT = 50;
 
 async function createPrediction(input, meta = {}) {
-  const results = await runPythonPrediction(input);
+  // ── Pre-screening risk assessment ──
+  const risk = await assessRisk(meta.userId, input);
+
+  let results;
+
+  if (risk.autoReject) {
+    // Auto-reject: skip ML models, return rejection with risk info
+    results = {
+      knn: {
+        prediction: "Rejected",
+        confidence: 0,
+        probabilities: { rejected: 100, approved: 0 },
+      },
+      rf: {
+        prediction: "Rejected",
+        confidence: 0,
+        probabilities: { rejected: 100, approved: 0 },
+      },
+    };
+  } else {
+    results = await runPythonPrediction(input);
+  }
 
   const prediction = await Prediction.create({
     user: meta.userId,
@@ -16,6 +38,12 @@ async function createPrediction(input, meta = {}) {
     supportDocs: meta.supportDocs || [],
     input,
     results,
+    riskAssessment: {
+      riskScore: risk.riskScore,
+      riskLevel: risk.riskLevel,
+      flags: risk.flags,
+      autoRejected: risk.autoReject,
+    },
   });
 
   return {
@@ -23,6 +51,7 @@ async function createPrediction(input, meta = {}) {
     applicantName: prediction.applicantName,
     input: prediction.input,
     results: prediction.results,
+    riskAssessment: prediction.riskAssessment,
     createdAt: prediction.createdAt,
   };
 }

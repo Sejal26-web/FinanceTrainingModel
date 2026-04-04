@@ -43,6 +43,12 @@ const predictionSchema = new mongoose.Schema(
         },
       },
     },
+    riskAssessment: {
+      riskScore: { type: Number, default: 0 },
+      riskLevel: { type: String, enum: ["Low", "Medium", "High"], default: "Low" },
+      flags: [{ type: String }],
+      autoRejected: { type: Boolean, default: false },
+    },
   },
   { timestamps: true }
 );
