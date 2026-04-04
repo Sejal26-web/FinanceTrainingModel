@@ -284,50 +284,46 @@ export default function LoanFormPage() {
 
         {/* Upload Support Documents */}
         <div className="glass-card p-6 rounded-2xl border border-white/5" data-aos="fade-up" data-aos-delay="200">
-          <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-            <FiUpload className="text-cyan-400" /> Upload Support Documents
-          </h2>
+  <h2 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
+    <FiUpload className="text-cyan-400" /> Upload Documents
+  </h2>
 
-          <div className="border-2 border-dashed border-white/10 rounded-xl p-8 text-center hover:border-cyan-500/30 transition-colors">
-            <input
-              type="file"
-              id="fileUpload"
-              multiple
-              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-              onChange={handleFileChange}
-              className="hidden"
-            />
-            <label htmlFor="fileUpload" className="cursor-pointer">
-              <FiUpload className="text-3xl text-gray-500 mx-auto mb-3" />
-              <p className="text-gray-400 mb-1">Click to upload or drag and drop</p>
-              <p className="text-gray-500 text-sm">PDF, JPEG, PNG, DOC (max 5MB each, up to 5 files)</p>
-            </label>
-          </div>
+  <div className="space-y-6">
 
-          {files.length > 0 && (
-            <div className="mt-4 space-y-2">
-              {files.map((file, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between px-4 py-3 bg-white/5 rounded-lg border border-white/10"
-                >
-                  <div className="flex items-center gap-3">
-                    <FiFileText className="text-cyan-400" />
-                    <span className="text-gray-300 text-sm truncate max-w-xs">{file.name}</span>
-                    <span className="text-gray-500 text-xs">({(file.size / 1024).toFixed(1)} KB)</span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeFile(i)}
-                    className="text-red-400 hover:text-red-300 transition-colors"
-                  >
-                    <FiX />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
+    {/* ID Proof */}
+    <div>
+      <label className="block text-gray-300 mb-2 font-medium">ID Proof</label>
+      <input
+        type="file"
+        onChange={(e) => handleFileChange(e, "idProof")}
+        className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
+      />
+    </div>
+
+    {/* Income Certificate */}
+    <div>
+      <label className="block text-gray-300 mb-2 font-medium">Income Certificate</label>
+      <input
+        type="file"
+        onChange={(e) => handleFileChange(e, "incomeProof")}
+        className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
+      />
+    </div>
+
+    {/* Salary Slip */}
+    <div>
+      <label className="block text-gray-300 mb-2 font-medium">Salary Slip</label>
+      <input
+        type="file"
+        onChange={(e) => handleFileChange(e, "salarySlip")}
+        className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500 file:text-white hover:file:bg-cyan-600"
+      />
+    </div>
+
+  </div>
+</div>
+
+      
 
         {/* Submit */}
         <div className="text-center" data-aos="fade-up" data-aos-delay="300">
