@@ -188,6 +188,91 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* FAQ Section */}
+<section className="py-20">
+  <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <div className="mb-12">
+      <h2 className="text-4xl font-bold text-white">
+        Questions? We’ve Got Answers
+      </h2>
+    </div>
+
+    <div className="space-y-4">
+
+      <details className="border-b border-white/10 pb-4 group">
+        <summary className="cursor-pointer text-lg text-gray-300 hover:text-white flex justify-between items-center">
+          How is LoanWise different from traditional loan platforms?
+          <span className="group-open:rotate-180 transition">▼</span>
+        </summary>
+        <p className="mt-3 text-gray-400 text-sm leading-relaxed">
+          LoanWise stands out by using advanced machine learning algorithms such as KNN and Random Forest 
+          to analyze your loan application in real-time. Instead of relying solely on manual verification 
+          or static rules, our system evaluates multiple financial and behavioral factors to give you an 
+          instant prediction. This helps users understand their approval chances before applying, saving time, 
+          reducing uncertainty, and improving decision-making.
+        </p>
+      </details>
+
+      <details className="border-b border-white/10 pb-4 group">
+        <summary className="cursor-pointer text-lg text-gray-300 hover:text-white flex justify-between items-center">
+          What is a personal loan and how can it be used?
+          <span className="group-open:rotate-180 transition">▼</span>
+        </summary>
+        <p className="mt-3 text-gray-400 text-sm leading-relaxed">
+          A personal loan is an unsecured loan that does not require collateral and can be used for a variety 
+          of purposes such as medical emergencies, education, travel, home renovation, or debt consolidation. 
+          The approval is usually based on your credit score, income, and financial history. Since there is no 
+          collateral involved, interest rates may vary depending on your creditworthiness.
+        </p>
+      </details>
+
+      <details className="border-b border-white/10 pb-4 group">
+        <summary className="cursor-pointer text-lg text-gray-300 hover:text-white flex justify-between items-center">
+          How is a personal loan different from a credit card?
+          <span className="group-open:rotate-180 transition">▼</span>
+        </summary>
+        <p className="mt-3 text-gray-400 text-sm leading-relaxed">
+          A personal loan provides a fixed amount of money upfront with a structured repayment plan over a 
+          defined period, usually with fixed EMIs. In contrast, a credit card offers a revolving credit limit 
+          that you can use repeatedly, but it often comes with higher interest rates if not paid on time. 
+          Personal loans are generally better for large, one-time expenses, while credit cards are suitable 
+          for smaller, ongoing purchases.
+        </p>
+      </details>
+
+      <details className="border-b border-white/10 pb-4 group">
+        <summary className="cursor-pointer text-lg text-gray-300 hover:text-white flex justify-between items-center">
+          Will checking my loan eligibility affect my credit score?
+          <span className="group-open:rotate-180 transition">▼</span>
+        </summary>
+        <p className="mt-3 text-gray-400 text-sm leading-relaxed">
+          No, checking your eligibility on LoanWise does not affect your credit score. We use a soft inquiry 
+          process that allows you to explore your loan options safely. This means you can check your chances 
+          multiple times without worrying about any negative impact on your credit history.
+        </p>
+      </details>
+
+      <details className="border-b border-white/10 pb-4 group">
+        <summary className="cursor-pointer text-lg text-gray-300 hover:text-white flex justify-between items-center">
+          How can I protect myself from loan scams and fraud?
+          <span className="group-open:rotate-180 transition">▼</span>
+        </summary>
+        <p className="mt-3 text-gray-400 text-sm leading-relaxed">
+          To protect yourself from scams, always ensure you are using trusted and verified platforms like LoanWise. 
+          Avoid sharing sensitive information such as OTPs, passwords, or banking details with unknown sources. 
+          Be cautious of offers that seem too good to be true, and always verify official communication channels. 
+          Staying informed and alert is the best way to prevent fraud.
+        </p>
+      </details>
+
+    </div>
+
+  </div>
+</section>
+      
+    
     </div>
   );
 }
