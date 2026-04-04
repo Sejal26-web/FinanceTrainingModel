@@ -159,8 +159,8 @@ body::after {
   75% { transform: translate(-15px, -10px); }
 }
 @keyframes heroGridPulse {
-  0%, 100% { opacity: 0.03; }
-  50% { opacity: 0.08; }
+  0%, 100% { opacity: 0.04; }
+  50% { opacity: 0.10; }
 }
 @keyframes countUp {
   from { opacity: 0; transform: translateY(12px); }
@@ -217,11 +217,21 @@ body::after {
 
 .hero-orb {
   animation: heroOrb 12s ease-in-out infinite;
-  filter: blur(80px);
+  filter: blur(60px);
 }
 .hero-orb-2 {
   animation: heroOrb 15s ease-in-out infinite reverse;
-  filter: blur(100px);
+  filter: blur(70px);
+}
+
+:root.light .hero-orb,
+:root.light .hero-orb-2 {
+  filter: blur(50px);
+}
+
+:root.light .hero-grid-bg {
+  animation: heroGridPulse 4s ease-in-out infinite;
+  opacity: 0.06;
 }
 
 .hero-stat-enter {

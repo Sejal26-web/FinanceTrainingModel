@@ -36,7 +36,7 @@ export default function Navbar() {
             <img
               src={logo}
               alt="LoanWise"
-              className="h-50 w-auto object-contain transition-all duration-300 group-hover:scale-105"
+              className="h-28 w-auto object-contain transition-all duration-300 group-hover:scale-105"
             />
           </Link>
 

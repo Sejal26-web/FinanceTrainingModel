@@ -69,23 +69,23 @@ export default function LandingPage() {
         <div className="absolute inset-0 hero-grid-bg pointer-events-none" />
 
         {/* Animated gradient orbs */}
-        <div className="absolute top-20 left-[10%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-cyan-400/20 to-blue-500/20 hero-orb pointer-events-none" />
-        <div className="absolute bottom-10 right-[5%] w-[400px] h-[400px] rounded-full bg-gradient-to-br from-purple-400/20 to-pink-500/20 hero-orb-2 pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-blue-500/10 to-indigo-500/10 hero-orb pointer-events-none" style={{ animationDelay: "-4s" }} />
+        <div className="absolute top-20 left-[10%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-cyan-400/30 to-blue-500/30 dark:from-cyan-400/20 dark:to-blue-500/20 hero-orb pointer-events-none" />
+        <div className="absolute bottom-10 right-[5%] w-[400px] h-[400px] rounded-full bg-gradient-to-br from-purple-400/30 to-pink-500/30 dark:from-purple-400/20 dark:to-pink-500/20 hero-orb-2 pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 dark:from-blue-500/10 dark:to-indigo-500/10 hero-orb pointer-events-none" style={{ animationDelay: "-4s" }} />
 
         {/* Floating particles */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           {[
-            { top: "15%", left: "8%", size: 6, color: "bg-cyan-400", delay: "0s" },
-            { top: "25%", left: "85%", size: 4, color: "bg-blue-400", delay: "-2s" },
-            { top: "60%", left: "12%", size: 5, color: "bg-purple-400", delay: "-4s" },
-            { top: "70%", left: "78%", size: 3, color: "bg-cyan-300", delay: "-1s" },
-            { top: "40%", left: "92%", size: 7, color: "bg-indigo-400", delay: "-3s" },
-            { top: "80%", left: "45%", size: 4, color: "bg-teal-400", delay: "-5s" },
+            { top: "15%", left: "8%", size: 8, color: "bg-cyan-500 dark:bg-cyan-400", delay: "0s" },
+            { top: "25%", left: "85%", size: 6, color: "bg-blue-500 dark:bg-blue-400", delay: "-2s" },
+            { top: "60%", left: "12%", size: 7, color: "bg-purple-500 dark:bg-purple-400", delay: "-4s" },
+            { top: "70%", left: "78%", size: 5, color: "bg-cyan-600 dark:bg-cyan-300", delay: "-1s" },
+            { top: "40%", left: "92%", size: 9, color: "bg-indigo-500 dark:bg-indigo-400", delay: "-3s" },
+            { top: "80%", left: "45%", size: 6, color: "bg-teal-500 dark:bg-teal-400", delay: "-5s" },
           ].map((dot, i) => (
             <div
               key={i}
-              className={`absolute rounded-full ${dot.color} opacity-40 hero-dot`}
+              className={`absolute rounded-full ${dot.color} opacity-60 dark:opacity-40 hero-dot`}
               style={{
                 top: dot.top,
                 left: dot.left,
@@ -99,20 +99,20 @@ export default function LandingPage() {
 
         {/* Animated accent lines */}
         <div className="absolute top-1/3 left-0 right-0 pointer-events-none">
-          <div className="hero-line h-px bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent mb-20" />
-          <div className="hero-line h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent mb-16" />
-          <div className="hero-line h-px bg-gradient-to-r from-transparent via-blue-500/20 to-transparent" />
+          <div className="hero-line h-px bg-gradient-to-r from-transparent via-cyan-500/60 dark:via-cyan-500/40 to-transparent mb-20" />
+          <div className="hero-line h-px bg-gradient-to-r from-transparent via-purple-500/50 dark:via-purple-500/30 to-transparent mb-16" />
+          <div className="hero-line h-px bg-gradient-to-r from-transparent via-blue-500/40 dark:via-blue-500/20 to-transparent" />
         </div>
 
         {/* Floating geometric shapes */}
-        <div className="absolute top-[15%] right-[15%] hero-float pointer-events-none opacity-20">
-          <div className="w-16 h-16 border-2 border-cyan-400 rounded-lg rotate-45" />
+        <div className="absolute top-[15%] right-[15%] hero-float pointer-events-none opacity-40 dark:opacity-20">
+          <div className="w-16 h-16 border-2 border-cyan-500 dark:border-cyan-400 rounded-lg rotate-45" />
         </div>
-        <div className="absolute bottom-[20%] left-[10%] hero-float-reverse pointer-events-none opacity-15">
-          <div className="w-12 h-12 border-2 border-purple-400 rounded-full" />
+        <div className="absolute bottom-[20%] left-[10%] hero-float-reverse pointer-events-none opacity-35 dark:opacity-15">
+          <div className="w-12 h-12 border-2 border-purple-500 dark:border-purple-400 rounded-full" />
         </div>
-        <div className="absolute top-[60%] right-[8%] hero-float-slow pointer-events-none opacity-15">
-          <svg width="40" height="40" viewBox="0 0 40 40" className="text-blue-400">
+        <div className="absolute top-[60%] right-[8%] hero-float-slow pointer-events-none opacity-35 dark:opacity-15">
+          <svg width="40" height="40" viewBox="0 0 40 40" className="text-blue-500 dark:text-blue-400">
             <polygon points="20,4 36,36 4,36" fill="none" stroke="currentColor" strokeWidth="2" />
           </svg>
         </div>
