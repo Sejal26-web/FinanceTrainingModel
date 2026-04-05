@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useState, useEffect, useRef } from "react";
+import bgImage from "../assets/logo.png";
 import { FiShield, FiTrendingUp, FiClock, FiBarChart2, FiArrowRight, FiChevronDown, FiZap } from "react-icons/fi";
 
 const features = [
@@ -32,7 +33,7 @@ const features = [
 
 const faqData = [
   {
-    q: "How does AI predict my loan approval?",
+    q: "How does ML model predict my loan approval?",
     a: "Our system uses two machine learning models \u2014 K-Nearest Neighbors (KNN) and Random Forest \u2014 trained on thousands of loan applications. They analyze 18 features including income, credit history, loan amount, EMI burden ratio, and more to predict whether a loan would be approved. Both models run simultaneously and their predictions are compared for reliability.",
   },
   {
@@ -63,39 +64,26 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen">
+      {/* Background Image */}
+<div className="absolute inset-0 z-0 flex items-center justify-center pointer-events-none">
+  <img
+    src={bgImage}
+    alt="bg"
+    className="w-[500px] opacity-100"
+  />
+</div>
+
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
         {/* Animated background grid */}
-        <div className="absolute inset-0 hero-grid-bg pointer-events-none" />
-
+        {/* <div className="absolute inset-0 hero-grid-bg pointer-events-none z-10" /> */}
         {/* Animated gradient orbs */}
-        <div className="absolute top-20 left-[10%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-cyan-400/30 to-blue-500/30 dark:from-cyan-400/20 dark:to-blue-500/20 hero-orb pointer-events-none" />
+        {/* <div className="absolute top-20 left-[10%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-cyan-400/30 to-blue-500/30 dark:from-cyan-400/20 dark:to-blue-500/20 hero-orb pointer-events-none" />
         <div className="absolute bottom-10 right-[5%] w-[400px] h-[400px] rounded-full bg-gradient-to-br from-purple-400/30 to-pink-500/30 dark:from-purple-400/20 dark:to-pink-500/20 hero-orb-2 pointer-events-none" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 dark:from-blue-500/10 dark:to-indigo-500/10 hero-orb pointer-events-none" style={{ animationDelay: "-4s" }} />
 
-        {/* Floating particles */}
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {[
-            { top: "15%", left: "8%", size: 8, color: "bg-cyan-500 dark:bg-cyan-400", delay: "0s" },
-            { top: "25%", left: "85%", size: 6, color: "bg-blue-500 dark:bg-blue-400", delay: "-2s" },
-            { top: "60%", left: "12%", size: 7, color: "bg-purple-500 dark:bg-purple-400", delay: "-4s" },
-            { top: "70%", left: "78%", size: 5, color: "bg-cyan-600 dark:bg-cyan-300", delay: "-1s" },
-            { top: "40%", left: "92%", size: 9, color: "bg-indigo-500 dark:bg-indigo-400", delay: "-3s" },
-            { top: "80%", left: "45%", size: 6, color: "bg-teal-500 dark:bg-teal-400", delay: "-5s" },
-          ].map((dot, i) => (
-            <div
-              key={i}
-              className={`absolute rounded-full ${dot.color} opacity-60 dark:opacity-40 hero-dot`}
-              style={{
-                top: dot.top,
-                left: dot.left,
-                width: dot.size,
-                height: dot.size,
-                animationDelay: dot.delay,
-              }}
-            />
-          ))}
-        </div>
+       */}
+       
 
         {/* Animated accent lines */}
         <div className="absolute top-1/3 left-0 right-0 pointer-events-none">
@@ -104,45 +92,26 @@ export default function LandingPage() {
           <div className="hero-line h-px bg-gradient-to-r from-transparent via-blue-500/40 dark:via-blue-500/20 to-transparent" />
         </div>
 
-        {/* Floating geometric shapes */}
-        <div className="absolute top-[15%] right-[15%] hero-float pointer-events-none opacity-40 dark:opacity-20">
-          <div className="w-16 h-16 border-2 border-cyan-500 dark:border-cyan-400 rounded-lg rotate-45" />
-        </div>
-        <div className="absolute bottom-[20%] left-[10%] hero-float-reverse pointer-events-none opacity-35 dark:opacity-15">
-          <div className="w-12 h-12 border-2 border-purple-500 dark:border-purple-400 rounded-full" />
-        </div>
-        <div className="absolute top-[60%] right-[8%] hero-float-slow pointer-events-none opacity-35 dark:opacity-15">
-          <svg width="40" height="40" viewBox="0 0 40 40" className="text-blue-500 dark:text-blue-400">
-            <polygon points="20,4 36,36 4,36" fill="none" stroke="currentColor" strokeWidth="2" />
-          </svg>
-        </div>
+       
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center" data-aos="fade-up">
             {/* Animated badge */}
-            <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-cyan-500/10 via-blue-500/5 to-purple-500/10 border border-cyan-500/20 mb-8 backdrop-blur-sm">
-              <div className="relative">
-                <span className="w-2 h-2 rounded-full bg-cyan-500 block" />
-                <span className="absolute inset-0 w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
-              </div>
-              <span className="text-cyan-600 dark:text-cyan-400 text-sm font-medium"></span>
-              <FiZap className="text-cyan-500" size={14} />
-            </div>
+            {/* Empty space instead of badge */}
+<div className="mb-8 h-[40px]"></div>
 
             <h1 className="text-5xl lg:text-7xl font-bold mb-6 leading-tight">
-              <span className="hero-shimmer-text">Smart Loan</span>
+              <span className="hero-shimmer-text"></span>
               <br />
               <span className="bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 bg-clip-text text-transparent">
-                Approval Predictor
               </span>
             </h1>
 
             {/* Decorative pulse rings behind text */}
             <div className="relative inline-block">
               <p className="text-lg lg:text-xl t-text-muted max-w-2xl mx-auto mb-10 relative z-10">
-                Leverage advanced machine learning to instantly predict your loan approval chances.
-                Powered by KNN and Random Forest algorithms .
-              </p>
+                Predict your loan approval in seconds
+                with KNN and RF              </p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -228,6 +197,7 @@ export default function LandingPage() {
                 <h3 className="t-text font-semibold text-lg mb-2">{feature.title}</h3>
                 <p className="t-text-muted text-sm leading-relaxed">{feature.desc}</p>
               </div>
+              
             ))}
           </div>
         </div>
