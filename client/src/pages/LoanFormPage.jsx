@@ -283,51 +283,73 @@ export default function LoanFormPage() {
         </div>
 
         {/* Upload Support Documents */}
-        <div className="glass-card p-6 rounded-2xl border t-border" data-aos="fade-up" data-aos-delay="200">
-          <h2 className="text-xl font-semibold t-text mb-6 flex items-center gap-2">
-            <FiUpload className="text-cyan-600" /> Upload Support Documents
-          </h2>
+        {/* Upload Support Documents */}
+<div className="glass-card p-6 rounded-2xl border t-border" data-aos="fade-up" data-aos-delay="200">
+  <h2 className="text-xl font-semibold t-text mb-6 flex items-center gap-2">
+    <FiUpload className="text-cyan-600" /> Upload Required Documents
+  </h2>
 
-          <div className="border-2 border-dashed t-border rounded-xl p-8 text-center hover:border-cyan-500 transition-colors">
-            <input
-              type="file"
-              id="fileUpload"
-              multiple
-              accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
-              onChange={handleFileChange}
-              className="hidden"
-            />
-            <label htmlFor="fileUpload" className="cursor-pointer">
-              <FiUpload className="text-3xl t-text-muted mx-auto mb-3" />
-              <p className="t-text-secondary mb-1">Click to upload or drag and drop</p>
-              <p className="t-text-muted text-sm">PDF, JPEG, PNG, DOC (max 5MB each, up to 5 files)</p>
-            </label>
-          </div>
+  <div className="space-y-6">
 
-          {files.length > 0 && (
-            <div className="mt-4 space-y-2">
-              {files.map((file, i) => (
-                <div
-                  key={i}
-                  className="flex items-center justify-between px-4 py-3 t-bg-input rounded-lg border t-border"
-                >
-                  <div className="flex items-center gap-3">
-                    <FiFileText className="text-cyan-600" />
-                    <span className="t-text-secondary text-sm truncate max-w-xs">{file.name}</span>
-                    <span className="t-text-muted text-xs">({(file.size / 1024).toFixed(1)} KB)</span>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => removeFile(i)}
-                    className="text-red-500 hover:text-red-600 transition-colors"
-                  >
-                    <FiX />
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
+    {/* ✅ Proof ID */}
+    <div>
+      <p className="t-text-secondary mb-2 text-sm font-medium">Proof ID (Aadhar / PAN / Passport)</p>
+      <div className="border-2 border-dashed t-border rounded-xl p-6 text-center hover:border-cyan-500 transition-colors">
+        <input
+          type="file"
+          id="proofId"
+          accept=".pdf,.jpg,.jpeg,.png"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        <label htmlFor="proofId" className="cursor-pointer">
+          <FiUpload className="text-2xl t-text-muted mx-auto mb-2" />
+          <p className="t-text-secondary text-sm">Upload Proof ID</p>
+        </label>
+      </div>
+    </div>
+
+    {/* ✅ Income Certificate */}
+    <div>
+      <p className="t-text-secondary mb-2 text-sm font-medium">Income Certificate</p>
+      <div className="border-2 border-dashed t-border rounded-xl p-6 text-center hover:border-cyan-500 transition-colors">
+        <input
+          type="file"
+          id="incomeCert"
+          accept=".pdf,.jpg,.jpeg,.png"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        <label htmlFor="incomeCert" className="cursor-pointer">
+          <FiUpload className="text-2xl t-text-muted mx-auto mb-2" />
+          <p className="t-text-secondary text-sm">Upload Income Certificate</p>
+        </label>
+      </div>
+    </div>
+
+    {/* ✅ Salary Slip (Conditional FIXED) */}
+    {employmentType === "Salaried" && (
+      <div>
+        <p className="t-text-secondary mb-2 text-sm font-medium">Salary Slip (Last 3 Months)</p>
+        <div className="border-2 border-dashed t-border rounded-xl p-6 text-center hover:border-cyan-500 transition-colors">
+          <input
+            type="file"
+            id="salarySlip"
+            multiple
+            accept=".pdf,.jpg,.jpeg,.png"
+            onChange={handleFileChange}
+            className="hidden"
+          />
+          <label htmlFor="salarySlip" className="cursor-pointer">
+            <FiUpload className="text-2xl t-text-muted mx-auto mb-2" />
+            <p className="t-text-secondary text-sm">Upload Salary Slips</p>
+          </label>
         </div>
+      </div>
+    )}
+
+  </div>
+</div>  
 
         {/* Submit */}
         <div className="text-center" data-aos="fade-up" data-aos-delay="300">

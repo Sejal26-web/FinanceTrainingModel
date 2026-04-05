@@ -125,7 +125,7 @@ export default function LandingPage() {
                 <span className="w-2 h-2 rounded-full bg-cyan-500 block" />
                 <span className="absolute inset-0 w-2 h-2 rounded-full bg-cyan-400 animate-ping" />
               </div>
-              <span className="text-cyan-600 dark:text-cyan-400 text-sm font-medium">AI-Powered Loan Prediction</span>
+              <span className="text-cyan-600 dark:text-cyan-400 text-sm font-medium"></span>
               <FiZap className="text-cyan-500" size={14} />
             </div>
 
@@ -141,7 +141,7 @@ export default function LandingPage() {
             <div className="relative inline-block">
               <p className="text-lg lg:text-xl t-text-muted max-w-2xl mx-auto mb-10 relative z-10">
                 Leverage advanced machine learning to instantly predict your loan approval chances.
-                Powered by KNN and Random Forest algorithms with 94%+ AUC score.
+                Powered by KNN and Random Forest algorithms .
               </p>
             </div>
 
@@ -207,7 +207,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16" data-aos="fade-up">
             <h2 className="text-3xl lg:text-4xl font-bold t-text mb-4">
-              Why Choose LoanPredict AI?
+              Why Choose LoanWise?
             </h2>
             <p className="t-text-muted text-lg max-w-xl mx-auto">
               Built with state-of-the-art machine learning for reliable, explainable predictions.
@@ -271,7 +271,7 @@ export default function LandingPage() {
             <div className="relative z-10">
               <h2 className="text-3xl font-bold t-text mb-4">Ready to Check Your Eligibility?</h2>
               <p className="t-text-muted mb-8">
-                Join thousands of users who trust our AI system to predict their loan approval chances.
+                Join thousands of users who trust our system to predict their loan approval chances.
               </p>
               <button
                 onClick={() => navigate(user ? "/apply" : "/register")}
@@ -293,7 +293,6 @@ export default function LandingPage() {
               Frequently Asked Questions
             </h2>
             <p className="t-text-muted text-lg">
-              Everything you need to know about our AI loan prediction system.
             </p>
           </div>
 

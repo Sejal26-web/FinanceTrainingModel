@@ -78,29 +78,8 @@ export default function ModelComparison() {
       },
     ],
   };
+  
 
-  // Radar
-  const radarData = {
-    labels: ["Accuracy", "Precision", "Recall", "F1 Score", "CV Mean"],
-    datasets: [
-      {
-        label: "KNN",
-        data: [knn.accuracy, knn.precision, knn.recall, knn.f1_score, knn.cv_mean],
-        backgroundColor: COLORS.cyan.light,
-        borderColor: COLORS.cyan.border,
-        pointBackgroundColor: COLORS.cyan.border,
-        borderWidth: 2,
-      },
-      {
-        label: "Random Forest",
-        data: [rf.accuracy, rf.precision, rf.recall, rf.f1_score, rf.cv_mean],
-        backgroundColor: COLORS.blue.light,
-        borderColor: COLORS.blue.border,
-        pointBackgroundColor: COLORS.blue.border,
-        borderWidth: 2,
-      },
-    ],
-  };
 
   // CV scores
   const cvData = {
@@ -163,7 +142,7 @@ export default function ModelComparison() {
         </div>
       </GlassCard>
 
-      {/* Radar + Feature importance */}
+      {/* Radar + Feature importance
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <GlassCard data-aos="fade-right" data-aos-delay="100">
           <SectionTitle subtitle="Multi-metric radar overlay">Radar Overview</SectionTitle>
@@ -180,9 +159,9 @@ export default function ModelComparison() {
             <Doughnut data={featureData} options={featureDoughnutOpts} />
           </div>
         </GlassCard>
-      </div>
+      </div> */}
 
-      {/* Cross-validation */}
+      {/* Cross-validation
       <GlassCard data-aos="fade-up" data-aos-delay="150">
         <SectionTitle subtitle="Per-fold accuracy across 5-fold cross-validation">
           Cross-Validation Scores
@@ -190,7 +169,7 @@ export default function ModelComparison() {
         <div className="h-72">
           <Bar data={cvData} options={getChartOptions("bar")} />
         </div>
-      </GlassCard>
+      </GlassCard> */}
 
       {/* Confusion matrices */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
