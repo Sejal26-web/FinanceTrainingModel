@@ -5,7 +5,7 @@ import {
   RadialLinearScale, PointElement, LineElement, Filler,
   Title, Tooltip, Legend,
 } from "chart.js";
-import { Bar, Radar, Doughnut } from "react-chartjs-2";
+import { Bar } from "react-chartjs-2";
 import { HiOutlineChartBar, HiOutlineCpuChip, HiOutlineCheckCircle, HiOutlineArrowPath } from "react-icons/hi2";
 import { getMetrics, getPredictionStats } from "../../services/api";
 import {
@@ -142,34 +142,6 @@ export default function ModelComparison() {
         </div>
       </GlassCard>
 
-      {/* Radar + Feature importance
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <GlassCard data-aos="fade-right" data-aos-delay="100">
-          <SectionTitle subtitle="Multi-metric radar overlay">Radar Overview</SectionTitle>
-          <div className="h-80">
-            <Radar data={radarData} options={getChartOptions("radar")} />
-          </div>
-        </GlassCard>
-
-        <GlassCard data-aos="fade-left" data-aos-delay="100">
-          <SectionTitle subtitle="Which features matter most to Random Forest">
-            RF Feature Importance
-          </SectionTitle>
-          <div className="h-80">
-            <Doughnut data={featureData} options={featureDoughnutOpts} />
-          </div>
-        </GlassCard>
-      </div> */}
-
-      {/* Cross-validation
-      <GlassCard data-aos="fade-up" data-aos-delay="150">
-        <SectionTitle subtitle="Per-fold accuracy across 5-fold cross-validation">
-          Cross-Validation Scores
-        </SectionTitle>
-        <div className="h-72">
-          <Bar data={cvData} options={getChartOptions("bar")} />
-        </div>
-      </GlassCard> */}
 
       {/* Confusion matrices */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -75,14 +75,7 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <section className="relative py-20 lg:py-32 overflow-hidden">
-        {/* Animated background grid */}
-        {/* <div className="absolute inset-0 hero-grid-bg pointer-events-none z-10" /> */}
-        {/* Animated gradient orbs */}
-        {/* <div className="absolute top-20 left-[10%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-cyan-400/30 to-blue-500/30 dark:from-cyan-400/20 dark:to-blue-500/20 hero-orb pointer-events-none" />
-        <div className="absolute bottom-10 right-[5%] w-[400px] h-[400px] rounded-full bg-gradient-to-br from-purple-400/30 to-pink-500/30 dark:from-purple-400/20 dark:to-pink-500/20 hero-orb-2 pointer-events-none" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-blue-500/20 to-indigo-500/20 dark:from-blue-500/10 dark:to-indigo-500/10 hero-orb pointer-events-none" style={{ animationDelay: "-4s" }} />
-
-       */}
+       
        
 
         {/* Animated accent lines */}
@@ -92,11 +85,9 @@ export default function LandingPage() {
           <div className="hero-line h-px bg-gradient-to-r from-transparent via-blue-500/40 dark:via-blue-500/20 to-transparent" />
         </div>
 
-       
-
+      
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="text-center" data-aos="fade-up">
-            {/* Animated badge */}
             {/* Empty space instead of badge */}
 <div className="mb-8 h-[40px]"></div>
 

@@ -283,7 +283,6 @@ export default function LoanFormPage() {
         </div>
 
         {/* Upload Support Documents */}
-        {/* Upload Support Documents */}
 <div className="glass-card p-6 rounded-2xl border t-border" data-aos="fade-up" data-aos-delay="200">
   <h2 className="text-xl font-semibold t-text mb-6 flex items-center gap-2">
     <FiUpload className="text-cyan-600" /> Upload Required Documents
@@ -308,6 +307,11 @@ export default function LoanFormPage() {
         </label>
       </div>
     </div>
+    {files.length > 0 && (
+  <p className="text-sm mt-2 text-green-600">
+    Uploaded: {files[0].name}
+  </p>
+)}
 
     {/* ✅ Income Certificate */}
     <div>
@@ -326,6 +330,11 @@ export default function LoanFormPage() {
         </label>
       </div>
     </div>
+    {files.length > 1 && (
+  <p className="text-sm mt-2 text-green-600">
+    Uploaded: {files[1].name}
+  </p>
+)}
 
     {/* ✅ Salary Slip (Conditional FIXED) */}
     {employmentType === "Salaried" && (
@@ -346,10 +355,19 @@ export default function LoanFormPage() {
           </label>
         </div>
       </div>
+      
     )}
 
   </div>
+  {files.length > 2 && (
+  <div className="mt-2 text-sm text-green-600">
+    {files.slice(2).map((f, i) => (
+      <p key={i}>Uploaded: {f.name}</p>
+    ))}
+  </div>
+)}
 </div>  
+
 
         {/* Submit */}
         <div className="text-center" data-aos="fade-up" data-aos-delay="300">

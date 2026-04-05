@@ -149,45 +149,7 @@ export default function ResultsPage() {
       },
     ],
   };
-
-  const radarData = metrics
-    ? {
-        labels: ["Accuracy", "Precision", "Recall", "F1 Score", "CV Mean"],
-        datasets: [
-          {
-            label: "KNN",
-            data: [
-              metrics.knn.accuracy,
-              metrics.knn.precision,
-              metrics.knn.recall,
-              metrics.knn.f1_score,
-              metrics.knn.cv_mean,
-            ],
-            backgroundColor: COLORS.cyan.light,
-            borderColor: COLORS.cyan.border,
-            pointBackgroundColor: COLORS.cyan.border,
-            pointRadius: 4,
-            borderWidth: 2,
-          },
-          {
-            label: "Random Forest",
-            data: [
-              metrics.rf.accuracy,
-              metrics.rf.precision,
-              metrics.rf.recall,
-              metrics.rf.f1_score,
-              metrics.rf.cv_mean,
-            ],
-            backgroundColor: COLORS.blue.light,
-            borderColor: COLORS.blue.border,
-            pointBackgroundColor: COLORS.blue.border,
-            pointRadius: 4,
-            borderWidth: 2,
-          },
-        ],
-      }
-    : null;
-
+  
   const featureImportanceData = metrics?.rf?.feature_importance
     ? {
         labels: Object.keys(metrics.rf.feature_importance).map(
