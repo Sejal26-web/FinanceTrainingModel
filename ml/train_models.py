@@ -32,6 +32,7 @@ def generate_synthetic_data(n=5000):
     """Generate a realistic synthetic loan dataset with multi-factor approval logic."""
     np.random.seed(42)
 
+
     # Lognormal income distributions (more realistic than uniform)
     applicant_income = np.random.lognormal(mean=8.5, sigma=0.8, size=n).astype(int)
     applicant_income = np.clip(applicant_income, 1500, 150000)
@@ -178,8 +179,8 @@ def evaluate_model(model, X_test, y_test, name):
 # ── Training ─────────────────────────────────────────────────────
 
 def train():
-    print("Generating dataset (5 000 samples)…")
-    df = generate_synthetic_data(5000)
+    print("Generating dataset (1 000 samples)…")
+    df = generate_synthetic_data(1000)
 
     print("Preprocessing & feature engineering…")
     X, y, scaler, label_encoders, feature_cols = preprocess(df)
@@ -188,65 +189,27 @@ def train():
         X, y, test_size=0.2, random_state=42, stratify=y,
     )
 
-    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    # Simple models without grid search
+    print("Training KNN…")
+    knn = KNeighborsClassifier(n_neighbors=5)
+    knn.fit(X_train, y_train)
 
-    # ── KNN with hyperparameter tuning ──
-    print("Tuning KNN…")
-    knn_grid = GridSearchCV(
-        KNeighborsClassifier(),
-        param_grid={
-            "n_neighbors": [3, 5, 7, 9, 11, 15],
-            "weights": ["uniform", "distance"],
-            "metric": ["euclidean", "manhattan"],
-        },
-        cv=cv,
-        scoring="f1",
-        n_jobs=-1,
-    )
-    knn_grid.fit(X_train, y_train)
-    knn = knn_grid.best_estimator_
-    print(f"  Best KNN params: {knn_grid.best_params_}")
+    print("Training Random Forest…")
+    rf = RandomForestClassifier(n_estimators=100, random_state=42)
+    rf.fit(X_train, y_train)
 
-    knn_cv = cross_val_score(knn, X, y, cv=cv, scoring="accuracy")
+    # Simple evaluation
     knn_metrics = evaluate_model(knn, X_test, y_test, "KNN")
-    knn_metrics["cv_scores"] = [round(s * 100, 2) for s in knn_cv.tolist()]
-    knn_metrics["cv_mean"] = round(knn_cv.mean() * 100, 2)
-    knn_metrics["best_params"] = knn_grid.best_params_
-
-    # ── Random Forest with hyperparameter tuning ──
-    print("Tuning Random Forest…")
-    rf_grid = GridSearchCV(
-        RandomForestClassifier(random_state=42),
-        param_grid={
-            "n_estimators": [100, 200, 300],
-            "max_depth": [10, 20, None],
-            "min_samples_split": [2, 5],
-            "min_samples_leaf": [1, 2],
-        },
-        cv=cv,
-        scoring="f1",
-        n_jobs=-1,
-    )
-    rf_grid.fit(X_train, y_train)
-    rf = rf_grid.best_estimator_
-    print(f"  Best RF params: {rf_grid.best_params_}")
-
-    rf_cv = cross_val_score(rf, X, y, cv=cv, scoring="accuracy")
     rf_metrics = evaluate_model(rf, X_test, y_test, "Random Forest")
-    rf_metrics["cv_scores"] = [round(s * 100, 2) for s in rf_cv.tolist()]
-    rf_metrics["cv_mean"] = round(rf_cv.mean() * 100, 2)
-    rf_metrics["best_params"] = {
-        k: (v if v is not None else "None")
-        for k, v in rf_grid.best_params_.items()
-    }
-
-    # Feature importance from best RF
+    
+    # Feature importance from RF
     rf_metrics["feature_importance"] = {
         feature_cols[i]: round(float(imp), 4)
         for i, imp in enumerate(rf.feature_importances_)
     }
 
     # ── Save artefacts ──
+    print("Saving models…")
     joblib.dump(knn, os.path.join(SCRIPT_DIR, "knn_model.joblib"))
     joblib.dump(rf, os.path.join(SCRIPT_DIR, "rf_model.joblib"))
     joblib.dump(scaler, os.path.join(SCRIPT_DIR, "scaler.joblib"))

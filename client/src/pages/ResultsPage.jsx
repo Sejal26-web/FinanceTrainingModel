@@ -149,6 +149,48 @@ export default function ResultsPage() {
       },
     ],
   };
+
+  const radarData = metrics
+    ? {
+        labels: ["Accuracy", "Precision", "Recall", "F1 Score", "ROC AUC"],
+        datasets: [
+          {
+            label: "KNN",
+            data: [
+              metrics.knn.accuracy,
+              metrics.knn.precision,
+              metrics.knn.recall,
+              metrics.knn.f1_score,
+              metrics.knn.roc_auc,
+            ],
+            backgroundColor: COLORS.cyan.bg + "40",
+            borderColor: COLORS.cyan.border,
+            borderWidth: 2,
+            pointBackgroundColor: COLORS.cyan.border,
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: COLORS.cyan.border,
+          },
+          {
+            label: "Random Forest",
+            data: [
+              metrics.rf.accuracy,
+              metrics.rf.precision,
+              metrics.rf.recall,
+              metrics.rf.f1_score,
+              metrics.rf.roc_auc,
+            ],
+            backgroundColor: COLORS.blue.bg + "40",
+            borderColor: COLORS.blue.border,
+            borderWidth: 2,
+            pointBackgroundColor: COLORS.blue.border,
+            pointBorderColor: "#fff",
+            pointHoverBackgroundColor: "#fff",
+            pointHoverBorderColor: COLORS.blue.border,
+          },
+        ],
+      }
+    : null;
   
   const featureImportanceData = metrics?.rf?.feature_importance
     ? {
