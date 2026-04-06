@@ -119,11 +119,11 @@ export default function ModelComparison() {
   return (
     <div className="space-y-6">
       {/* Metric summary cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" data-aos="fade-up">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" data-aos="fade-up">
         <MetricCard value={`${knn.accuracy}%`} label="KNN Accuracy" icon={HiOutlineChartBar} color="cyan" />
         <MetricCard value={`${rf.accuracy}%`} label="RF Accuracy" icon={HiOutlineChartBar} color="purple" />
-        <MetricCard value={`${knn.cv_mean}%`} label="KNN CV Mean" icon={HiOutlineArrowPath} color="cyan" />
-        <MetricCard value={`${rf.cv_mean}%`} label="RF CV Mean" icon={HiOutlineArrowPath} color="blue" />
+        {/* <MetricCard value={`${knn.cv_mean}%`} label="KNN CV Mean" icon={HiOutlineArrowPath} color="cyan" />
+        <MetricCard value={`${rf.cv_mean}%`} label="RF CV Mean" icon={HiOutlineArrowPath} color="blue" /> */}
         {stats?.total > 0 && (
           <>
             <MetricCard value={stats.total} label="Predictions" icon={HiOutlineCpuChip} color="purple" />
